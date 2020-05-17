@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  linux:
+    name: CentOS 7 Test
+    runs-on: ubuntu-latest
+    container:
+      image: simranb/centos-test
+    strategy:
+      matrix:
+        build: [1]
+        include:
+          - build: 1
+            build-matrix-arg: Some argument
+    env:
+      SOME_ENV_VAR: Some environment variable
+    steps:
+      - name: Print arguments
+        run: |
+          echo build-matrix-arg = ${{ matrix.build-matrix-arg }}
+          echo SOME_ENV_VAR = ${SOME_ENV_VAR}
+      - name: Run script
+        run: /script.sh
