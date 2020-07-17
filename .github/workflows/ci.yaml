@@ -11,13 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: simranb/olive-ci-centos
-    env:
-      ARCH: x86_64
-      LD_LIBRARY_PATH: "\
-        /usr/local/lib64:\
-        /usr/local/lib/python3.7/site-packages/numpy/.libs:\
-        /usr/lib64/pulseaudio:\
-        $LD_LIBRARY_PATH"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -30,7 +23,8 @@ jobs:
           cmake .. -G "Ninja"
 
       - name: Build
-        # TODO: Be explicit about dir?
+        working-directory: build
+        # TODO: Be explicit about dir? Is this persistent between steps?
         # working-directory: ${{ github.workspace }}/build
         run: |
           cmake --build .
@@ -40,6 +34,13 @@ jobs:
           cmake --install app --prefix=appdir/usr
 
       - name: Bundle
+        env:
+          ARCH: x86_64
+          LD_LIBRARY_PATH: "\
+            /usr/local/lib64:\
+            /usr/local/lib/python3.7/site-packages/numpy/.libs:\
+            /usr/lib64/pulseaudio:\
+            $LD_LIBRARY_PATH"
         run: |
           /usr/local/linuxdeployqt-x86_64.AppImage
           appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop
