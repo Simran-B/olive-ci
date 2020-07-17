@@ -25,5 +25,5 @@ RUN yum -y install lshw
 #RUN ["chmod", "+x", "/entrypoint.sh"]
 #ENTRYPOINT ["/entrypoint.sh"]
 
-COPY script.sh /script.sh
+COPY script.sh /
 #RUN ["chmod", "+x", "/script.sh"]
