@@ -13,7 +13,7 @@ jobs:
       image: simranb/centos-test
     strategy:
       matrix:
-        build: [1]
+        build: [] #[1]
         include:
           - build: 1
             build-matrix-arg: Some argument
