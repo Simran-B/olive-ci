@@ -28,7 +28,7 @@ jobs:
         working-directory: build
         # HACK: Comment out -Wshadow build flag which turns shadow warnings into errors
         run: |
-          sed -i -e "s/ -Wshadow/#-Wshadow/" app/CMakeLists.txt
+          sed -i -e "s/ -Wshadow/#-Wshadow/" ../app/CMakeLists.txt
           cmake --build .
 
       - name: Install
