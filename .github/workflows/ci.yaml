@@ -45,15 +45,14 @@ jobs:
             /usr/local/lib/python3.7/site-packages/numpy/.libs:\
             /usr/lib64/pulseaudio:\
             $LD_LIBRARY_PATH"
-        run: |
+        run: >
           /usr/local/linuxdeployqt-x86_64.AppImage
           appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop
           -appimage
           --appimage-extract-and-run
 
       - name: Upload artifact
-        working-directory: build
         uses: actions/upload-artifact@v2
         with:
           name: olive-appimage
-          path: Olive-*-x86_64.AppImage
+          path: build/Olive-*-x86_64.AppImage
