@@ -1,4 +1,4 @@
-name: CI
+name: CI CentOS Test
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   linux:
-    name: CentOS 7 Test
+    name: CentOS 7 under Ubuntu
     runs-on: ubuntu-latest
     container:
       image: simranb/centos-test
