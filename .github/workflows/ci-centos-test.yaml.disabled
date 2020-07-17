@@ -11,9 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: simranb/centos-test
-    if: false # disable workflow
-    # NOTE: strategy.matrix.build: [] is not allowed
-    #       (Invalid workflow file)
+    #if: false # disable workflow
+    # NOTE: strategy.matrix.build: [] is not allowed (Invalid workflow file)
     strategy:
       matrix:
         build: [1]
