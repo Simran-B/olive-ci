@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  linux:
+    name: Build Olive (CentOS 7)
+    runs-on: ubuntu-latest
+    container:
+      image: simranb/olive-ci-centos
+    env:
+      ARCH: x86_64
+      LD_LIBRARY_PATH: "\
+        /usr/local/lib64:\
+        /usr/local/lib/python3.7/site-packages/numpy/.libs:\
+        /usr/lib64/pulseaudio:\
+        $LD_LIBRARY_PATH"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: olive-editor/olive
+
+      - name: Configure
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Ninja"
+
+      - name: Build
+        # TODO: Be explicit about dir?
+        # working-directory: ${{ github.workspace }}/build
+        run: |
+          cmake --build .
+
+      - name: Install
+        run: |
+          cmake --install app --prefix=appdir/usr
+
+      - name: Bundle
+        run: |
+          /usr/local/linuxdeployqt-x86_64.AppImage
+          appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop
+          -appimage
+          --appimage-extract-and-run
+
+      - name: Upload artifact
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: olive-appimage
+          path: Olive-*-x86_64.AppImage
