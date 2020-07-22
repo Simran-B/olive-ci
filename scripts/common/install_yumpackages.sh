@@ -8,7 +8,6 @@ set -ex
 yum install --setopt=tsflags=nodocs -y \
     cups-libs \
     giflib-devel \
-    git \
     gstreamer1 gstreamer1-devel \
     gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-devel \
     libicu-devel \
@@ -57,3 +56,14 @@ yum install --setopt=tsflags=nodocs -y epel-release
 yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
 yum install --setopt=tsflags=nodocs -y ffmpeg ffmpeg-devel
 # TODO: Does the nodocs flag do anything here?
+
+# Many IUS packages have dependencies from EPEL repo, see https://ius.io/setup
+yum install -y \
+    https://repo.ius.io/ius-release-el7.rpm \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+# actions/checkout@v2 needs at least Git 2.18 to not just download an archive
+# https://github.com/actions/checkout/issues/238#issuecomment-633750110
+# If Git is used for cloning, then linuxdeployqt will use the short commit hash
+# in the AppImage name without explicitly setting the VERSION env var.
+yum swap -y git git224-core
