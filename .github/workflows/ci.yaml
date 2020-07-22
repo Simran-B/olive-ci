@@ -17,7 +17,9 @@ jobs:
           repository: olive-editor/olive
 
       - name: Configure
+        id: configure
         run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           mkdir build
           cd build
           cmake .. -G "Ninja"
@@ -39,6 +41,7 @@ jobs:
       - name: Bundle
         working-directory: build
         env:
+          VERSION: ${{ steps.configure.sha_short }}
           ARCH: x86_64
           LD_LIBRARY_PATH: "\
             /usr/local/lib64:\
