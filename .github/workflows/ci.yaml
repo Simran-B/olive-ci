@@ -57,5 +57,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: olive-appimage
+          name: Olive-x86_64.AppImage.zip
           path: build/Olive*-x86_64.AppImage
