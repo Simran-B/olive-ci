@@ -19,9 +19,9 @@ jobs:
       - name: Configure
         id: configure
         run: |
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           mkdir build
           cd build
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           cmake .. -G "Ninja"
 
       - name: Build
