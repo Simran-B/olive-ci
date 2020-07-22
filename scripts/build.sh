@@ -19,7 +19,7 @@ cmake .. -G "Ninja"
 cmake --build .
 
 # Install
-cmake --install app --prefix=appdir/usr
+cmake --install app --prefix appdir/usr
 
 # Bundle
 # TODO: Is /usr/local/lib64 non-standard?
