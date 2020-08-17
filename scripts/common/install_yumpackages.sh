@@ -25,37 +25,32 @@ yum install --setopt=tsflags=nodocs -y \
     python3-tkinter \
     zlib-devel
 
-# HACK: Qt5GuiConfigExtras.cmake expects libGL.so in /usr/local/lib64 but it gets installed to /usr/lib64
-cd /usr/local/lib64/ && ln -s /usr/lib64/libGL.so
-# Alternatively, we could edit /usr/local/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake
-# - _qt5gui_find_extra_libs(OPENGL "/usr/local/lib64/libGL.so" "" "")
-# + _qt5gui_find_extra_libs(OPENGL "/usr/lib64/libGL.so" "" "")
+# This is needed for Xvfb to function properly.
+dbus-uuidgen > /etc/machine-id
 
 yum -y groupinstall "Development Tools"
 
-# TODO: Below code would install the obsolete devtoolset-6.
+# TODO: Below code installs the obsolete devtoolset-6.
 #       Unclear which devtoolset it will be for VFX platform CY2021:
 #       https://groups.google.com/forum/#!topic/vfx-platform-discuss/_-_CPw1fD3c
 
-#yum install -y --setopt=tsflags=nodocs centos-release-scl-rh yum-utils
-#
-#if [[ $DTS_VERSION == 6 ]]; then
-#    # Use the centos vault as the original devtoolset-6 is not part of CentOS-7 anymore
-#    sed -i 's/7/7.6.1810/g; s|^#\s*\(baseurl=http://\)mirror|\1vault|g; /mirrorlist/d' /etc/yum.repos.d/CentOS-SCLo-*.repo
-#fi
-#
-#yum install -y --setopt=tsflags=nodocs \
-#    devtoolset-$DTS_VERSION-toolchain
-#
-#yum install -y epel-release
+yum install -y --setopt=tsflags=nodocs centos-release-scl-rh yum-utils
+
+if [[ $DTS_VERSION == 6 ]]; then
+    # Use the centos vault as the original devtoolset-6 is not part of CentOS-7 anymore
+    sed -i 's/7/7.6.1810/g; s|^#\s*\(baseurl=http://\)mirror|\1vault|g; /mirrorlist/d' /etc/yum.repos.d/CentOS-SCLo-*.repo
+fi
+
+yum install -y --setopt=tsflags=nodocs \
+    devtoolset-$DTS_VERSION-toolchain
 
 # TODO: Use Docker image instead similar to the other package in Dockerfile
 # Maybe this: https://github.com/jrottenberg/ffmpeg/blob/master/docker-images/4.3/centos7/Dockerfile
 # Current solution from: https://linuxize.com/post/how-to-install-ffmpeg-on-centos-7/
-yum install --setopt=tsflags=nodocs -y epel-release
+yum install -y epel-release
 yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
-yum install --setopt=tsflags=nodocs -y ffmpeg ffmpeg-devel
-# TODO: Does the nodocs flag do anything here?
+yum install -y ffmpeg ffmpeg-devel
+# TODO: Would the nodocs flag do anything here?
 
 # Many IUS packages have dependencies from EPEL repo, see https://ius.io/setup
 yum install -y \
@@ -67,3 +62,9 @@ yum install -y \
 # If Git is used for cloning, then linuxdeployqt will use the short commit hash
 # in the AppImage name without explicitly setting the VERSION env var.
 yum swap -y git git224-core
+
+# HACK: Qt5GuiConfigExtras.cmake expects libGL.so in /usr/local/lib64 but it gets installed to /usr/lib64
+cd /usr/local/lib64/ && ln -s /usr/lib64/libGL.so
+# Alternatively, we could edit /usr/local/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake
+# - _qt5gui_find_extra_libs(OPENGL "/usr/local/lib64/libGL.so" "" "")
+# + _qt5gui_find_extra_libs(OPENGL "/usr/lib64/libGL.so" "" "")
