@@ -6,7 +6,10 @@ on:
       - master
   workflow_dispatch:
     inputs:
-      trigger: manual
+      trigger:
+        description: Trigger Name
+        required: true
+        default: manual
 
 jobs:
   build:
