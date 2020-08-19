@@ -21,9 +21,10 @@ jobs:
     steps:
       - name: Manual inputs
         run: |
-          echo "trigger: ${{ github.event.inputs.trigger }}
-          echo "cause: ${{ matrix.cause }}
-          echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}
+          echo "trigger: ${{ github.event.inputs.trigger }}"
+          echo "cause: ${{ matrix.cause }}"
+          echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}"
+          echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }} / ${{ [] || 'truthy' }}"
           echo
           echo "github context:"
           echo "${{ toJSON(github) }}"
