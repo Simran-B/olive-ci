@@ -1,0 +1,34 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      trigger: manual
+
+jobs:
+  build:
+    name: Test Workflow
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cause: [automatic]
+    steps:
+      - name: Manual inputs
+        run: |
+          echo "trigger: ${{ github.event.inputs.trigger }}
+          echo "cause: ${{ matrix.cause }}
+          echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}
+          echo
+          echo "github context:"
+          echo "${{ toJSON(github) }}"
+      - name: Only if manually triggered
+        run: |
+          echo "This workflow run was triggered manually"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+      - name: Only on push to branch
+        run: |
+          echo "This workflow run was triggered automatically"
+        if: ${{ github.event_name != 'workflow_dispatch' }}
