@@ -20,13 +20,17 @@ jobs:
         cause: [automatic]
     steps:
       - name: Manual inputs
+        env:
+          VERSION: '1.2.3'
+          PREFIX: '# 1'
         run: |
           echo "trigger: ${{ github.event.inputs.trigger }}"
           echo "cause: ${{ matrix.cause }}"
           echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}"
           echo "OR: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.trigger || matrix.cause }}"
           echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }} / ${{ ' ' || 'space?' }}"
-          echo "fake ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }} // ${{ 0 == 0 && false || 'second' }}"
+          echo "fake ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }} / ${{ 0 == 0 && false || 'second' }}"
+          echo "startsWith: ${{ startsWith(format('# {0}', env.VERSION), env.PREFIX) }}"
           echo "cast to string:"
           cat <<EOF
             ${{ toJSON('quoted?') }}
