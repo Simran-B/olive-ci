@@ -25,6 +25,7 @@ jobs:
           echo "cause: ${{ matrix.cause }}"
           echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}"
           echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }}"
+          echo "fake ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }}"
           echo
           echo "github context:"
           echo "${{ toJSON(github) }}"
