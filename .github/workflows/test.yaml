@@ -24,8 +24,10 @@ jobs:
           echo "trigger: ${{ github.event.inputs.trigger }}"
           echo "cause: ${{ matrix.cause }}"
           echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}"
-          echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }}"
+          echo "OR: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.trigger || matrix.cause }}"
+          echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }} / ${{ ' ' || 'space?' }}"
           echo "fake ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }}"
+          echo "cast to string: ${{ toJSON('foo' == 'foo') }} / ${{ toJSON(format('foo' == 'foo')) }}"
           echo
           echo "github context:"
           echo "${{ toJSON(github) }}"
