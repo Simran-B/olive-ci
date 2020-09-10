@@ -5,8 +5,13 @@
 
 set -ex
 
+# TODO: Check if this causes any problems. ASWF doesn't run a yum update.
+yum update -y
+
 yum install --setopt=tsflags=nodocs -y \
+    bzip2-devel \
     cups-libs \
+    freetype-devel \
     giflib-devel \
     gstreamer1 gstreamer1-devel \
     gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-devel \
@@ -19,10 +24,12 @@ yum install --setopt=tsflags=nodocs -y \
     libxkbcommon libxkbcommon-devel \
     libxkbcommon-x11-devel \
     libXScrnSaver libXScrnSaver-devel \
+    mercurial \
     mesa-libGL-devel \
     pciutils-devel \
     pulseaudio-libs pulseaudio-libs-devel \
     python3-tkinter \
+    wget \
     zlib-devel
 
 # This is needed for Xvfb to function properly.
@@ -68,3 +75,6 @@ cd /usr/local/lib64/ && ln -s /usr/lib64/libGL.so
 # Alternatively, we could edit /usr/local/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake
 # - _qt5gui_find_extra_libs(OPENGL "/usr/local/lib64/libGL.so" "" "")
 # + _qt5gui_find_extra_libs(OPENGL "/usr/lib64/libGL.so" "" "")
+
+# TODO: Does clearing the cache have any negative side effects?
+yum clean all
