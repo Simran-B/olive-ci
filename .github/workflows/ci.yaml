@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+  # Enable manual invocation
+  # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+  workflow_dispatch:
+    inputs:
 
 jobs:
   linux:
@@ -17,6 +21,13 @@ jobs:
           repository: olive-editor/olive
 
       - name: Configure
+       # TODO: Use manual input over hard-coded value / matrix setting
+       # ${{ github.event.inputs.cxx-compiler || matrix.cxx-compiler }} ?
+       # Mutually exclusive steps - if: ${{ github.event. workflow_dispatch github.event.inputs.cxx-compiler == '' / != ''
+       # https://github.community/t/github-actions-manual-trigger-approvals/16233/83
+       #with:
+       #  cxx-compiler: g++
+       #  cc-compiler: gcc
         run: |
           mkdir build
           cd build
