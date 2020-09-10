@@ -1,7 +1,5 @@
 # TODO: Fix name, this is a complete CI image. Should include OS name.
 
-ARG OLIVE_ORG=olive-editor
-
 ARG ASWF_PKG_ORG=aswftesting
 ARG VFXPLATFORM_VERSION=2021
 ARG CI_COMMON_VERSION=2
@@ -21,10 +19,9 @@ FROM centos:7 as ci-base
 ARG CI_COMMON_VERSION
 ARG DTS_VERSION
 
-# TODO: Is there an official email address?
-LABEL maintainer="mail@olivevideoeditor.org"
+LABEL maintainer="olivevideoeditor@gmail.com"
 
-LABEL org.opencontainers.image.name="$OLIVE_ORG/ci-centos"
+LABEL org.opencontainers.image.name="$olivevideoeditor/ci-centos"
 LABEL org.opencontainers.image.description="CentOS CI Docker Image"
 LABEL org.opencontainers.image.url="http://olivevideoeditor.org"
 LABEL org.opencontainers.image.source="https://github.com/olive-editor/olive"
