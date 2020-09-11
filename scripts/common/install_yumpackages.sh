@@ -8,6 +8,7 @@ set -ex
 # TODO: Check if this causes any problems. ASWF doesn't run a yum update.
 yum update -y
 
+# TODO: Add deps of deps which are explicitly listed in aswf-docker?
 yum install --setopt=tsflags=nodocs -y \
     bzip2-devel \
     cups-libs \
@@ -24,7 +25,6 @@ yum install --setopt=tsflags=nodocs -y \
     libxkbcommon libxkbcommon-devel \
     libxkbcommon-x11-devel \
     libXScrnSaver libXScrnSaver-devel \
-    mercurial \
     mesa-libGL-devel \
     pciutils-devel \
     pulseaudio-libs pulseaudio-libs-devel \
@@ -51,30 +51,24 @@ fi
 yum install -y --setopt=tsflags=nodocs \
     devtoolset-$DTS_VERSION-toolchain
 
-# TODO: Use Docker image instead similar to the other package in Dockerfile
-# Maybe this: https://github.com/jrottenberg/ffmpeg/blob/master/docker-images/4.3/centos7/Dockerfile
-# Current solution from: https://linuxize.com/post/how-to-install-ffmpeg-on-centos-7/
 yum install -y epel-release
-yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
-yum install -y ffmpeg ffmpeg-devel
-# TODO: Would the nodocs flag do anything here?
 
-# Many IUS packages have dependencies from EPEL repo, see https://ius.io/setup
+# Additional package that are not found initially
 yum install -y \
-    https://repo.ius.io/ius-release-el7.rpm \
-    https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    rh-git218 \
+#   lame-devel
+#   libcaca-devel \
+#   libdb4-devel \
+#   libdc1394-devel \
+#   p7zip \
+#   yasm-devel \
+#   zvbi-devel
 
-# actions/checkout@v2 needs at least Git 2.18 to not just download an archive
-# https://github.com/actions/checkout/issues/238#issuecomment-633750110
-# If Git is used for cloning, then linuxdeployqt will use the short commit hash
-# in the AppImage name without explicitly setting the VERSION env var.
-yum swap -y git git224-core
+# TODO: Does clearing the cache have any negative side effects?
+yum clean all
 
 # HACK: Qt5GuiConfigExtras.cmake expects libGL.so in /usr/local/lib64 but it gets installed to /usr/lib64
 cd /usr/local/lib64/ && ln -s /usr/lib64/libGL.so
 # Alternatively, we could edit /usr/local/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake
 # - _qt5gui_find_extra_libs(OPENGL "/usr/local/lib64/libGL.so" "" "")
 # + _qt5gui_find_extra_libs(OPENGL "/usr/lib64/libGL.so" "" "")
-
-# TODO: Does clearing the cache have any negative side effects?
-yum clean all
