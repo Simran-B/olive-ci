@@ -21,13 +21,13 @@ jobs:
           repository: olive-editor/olive
 
       - name: Configure
-       # TODO: Use manual input over hard-coded value / matrix setting
-       # ${{ github.event.inputs.cxx-compiler || matrix.cxx-compiler }} ?
-       # Mutually exclusive steps - if: ${{ github.event. workflow_dispatch github.event.inputs.cxx-compiler == '' / != ''
-       # https://github.community/t/github-actions-manual-trigger-approvals/16233/83
-       #with:
-       #  cxx-compiler: g++
-       #  cc-compiler: gcc
+        # TODO: Use manual input over hard-coded value / matrix setting
+        # ${{ github.event.inputs.cxx-compiler || matrix.cxx-compiler }} ?
+        # Mutually exclusive steps - if: ${{ github.event. workflow_dispatch github.event.inputs.cxx-compiler == '' / != ''
+        # https://github.community/t/github-actions-manual-trigger-approvals/16233/83
+        #with:
+        #  cxx-compiler: g++
+        #  cc-compiler: gcc
         run: |
           mkdir build
           cd build
@@ -37,6 +37,8 @@ jobs:
         # TODO: Be explicit about dir? Is this persistent between steps?
         # working-directory: ${{ github.workspace }}/build
         working-directory: build
+        run: |
+          cmake --build .
 
       - name: Install
         working-directory: build
