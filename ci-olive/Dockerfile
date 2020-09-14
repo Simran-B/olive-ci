@@ -4,8 +4,7 @@
 # Build image (default):
 #  docker build -t olivevideoeditor/ci-olive -f ci-olive/Dockerfile .
 
-# TODO: ARG OLIVE_ORG=olivevideoeditor
-ARG OLIVE_ORG=simranb
+ARG OLIVE_ORG=olivevideoeditor
 ARG ASWF_PKG_ORG=aswftesting
 ARG CI_COMMON_VERSION=2
 ARG VFXPLATFORM_VERSION=2021
@@ -17,7 +16,7 @@ FROM ${ASWF_PKG_ORG}/ci-package-boost:${VFXPLATFORM_VERSION} as ci-package-boost
 FROM ${ASWF_PKG_ORG}/ci-package-openexr:${VFXPLATFORM_VERSION} as ci-package-openexr
 FROM ${ASWF_PKG_ORG}/ci-package-oiio:${VFXPLATFORM_VERSION} as ci-package-oiio
 FROM ${ASWF_PKG_ORG}/ci-package-ocio:${VFXPLATFORM_VERSION} as ci-package-ocio
-FROM ${OLIVE_ORG}/ci-ffmpeg:${FFMPEG_VERSION} as ci-ffmpeg
+FROM ${OLIVE_ORG}/ci-package-ffmpeg:${FFMPEG_VERSION} as ci-package-ffmpeg
 
 FROM ${OLIVE_ORG}/ci-common:${CI_COMMON_VERSION} as ci-olive
 
@@ -43,7 +42,7 @@ COPY --from=ci-package-boost /. /usr/local/
 COPY --from=ci-package-openexr /. /usr/local/
 COPY --from=ci-package-oiio /. /usr/local/
 COPY --from=ci-package-ocio /. /usr/local/
-COPY --from=ci-ffmpeg /. /usr/local/
+COPY --from=ci-package-ffmpeg /. /usr/local/
 
 RUN curl --location "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" \
       -o "/usr/local/linuxdeployqt-x86_64.AppImage" && \
