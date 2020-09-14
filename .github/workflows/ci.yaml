@@ -14,7 +14,7 @@ jobs:
     name: Build Olive (CentOS 7)
     runs-on: ubuntu-latest
     container:
-      image: simranb/olive-ci-centos
+      image: olivevideoeditor/ci-olive:2021.2
     steps:
       - uses: actions/checkout@v2
         with:
@@ -37,10 +37,6 @@ jobs:
         # TODO: Be explicit about dir? Is this persistent between steps?
         # working-directory: ${{ github.workspace }}/build
         working-directory: build
-        # HACK: Comment out -Wshadow build flag which turns shadow warnings into errors
-        run: |
-          sed -i -e "s/ -Wshadow/#-Wshadow/" ../app/CMakeLists.txt
-          cmake --build .
 
       - name: Install
         working-directory: build
@@ -49,13 +45,6 @@ jobs:
 
       - name: Bundle
         working-directory: build
-        env:
-          ARCH: x86_64
-          LD_LIBRARY_PATH: "\
-            /usr/local/lib64:\
-            /usr/local/lib/python3.7/site-packages/numpy/.libs:\
-            /usr/lib64/pulseaudio:\
-            $LD_LIBRARY_PATH"
         run: >
           /usr/local/linuxdeployqt-x86_64.AppImage
           appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop
