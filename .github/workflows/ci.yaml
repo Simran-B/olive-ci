@@ -46,15 +46,19 @@ jobs:
           cmake --install app --prefix appdir/usr
 
       - name: Bundle
+        id: bundle
         working-directory: build
-        run: >
-          /usr/local/linuxdeployqt-x86_64.AppImage
-          appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop
-          -appimage
+        env:
+          ARCH: x86_64
+        run: |
+          /usr/local/linuxdeployqt-x86_64.AppImage \
+          appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop \
+          -appimage \
           --appimage-extract-and-run
+          echo "::set-output name=artifact::$(ls Olive*.AppImage)"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Olive-x86_64.AppImage.zip
-          path: build/Olive*-x86_64.AppImage
+          name: ${{ steps.bundle.outputs.artifact }}.zip
+          path: build/Olive*.AppImage
