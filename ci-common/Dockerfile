@@ -4,8 +4,7 @@
 # Build image (default):
 #  docker build -t olivevideoeditor/ci-common:2 -f ci-common/Dockerfile .
 
-# TODO: ARG OLIVE_ORG=olivevideoeditor
-ARG OLIVE_ORG=simranb
+ARG OLIVE_ORG=olivevideoeditor
 ARG ASWF_PKG_ORG=aswftesting
 ARG CI_COMMON_VERSION=2
 ARG DTS_VERSION=9
