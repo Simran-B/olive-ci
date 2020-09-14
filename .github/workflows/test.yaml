@@ -43,7 +43,9 @@ jobs:
           EOF
           echo
           echo "github context:"
-          echo "${{ toJSON(github) }}"
+          cat <<EOF
+            ${{ toJSON(github) }}
+          EOF
       - name: Only if manually triggered
         run: |
           echo "This workflow run was triggered manually"
