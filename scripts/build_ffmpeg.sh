@@ -7,12 +7,14 @@
 # Uses { command } & pattern for parallelism https://gist.github.com/thenadz/6c0584d42fb007582fbc
 #
 # TOOD: Use advanced options such as LTO? e.g. https://code.videolan.org/videolan/x264/-/blob/master/configure
+# TODO: Enable debug symbols? (Or is it opt-out?)
+# TODO: Add more ffmpeg libraries? See https://raw.githubusercontent.com/jrottenberg/ffmpeg/master/docker-images/4.2/centos7/Dockerfile
 
 set -ex
 
 # Set up recent NASM
 {
-    wget --no-verbose -O nasm.tar.xz https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.xz
+    curl -fLsS -o nasm.tar.xz https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.xz
     tar xf nasm.tar.xz
     rm -f nasm.tar.xz
     cd nasm*
@@ -26,7 +28,7 @@ set -ex
 
 # Set up recent YASM
 {
-    wget --no-verbose -O yasm.tar.gz http://www.tortall.net/projects/yasm/releases/yasm-${YASM_VERSION}.tar.gz
+    curl -fLsS -o yasm.tar.gz http://www.tortall.net/projects/yasm/releases/yasm-${YASM_VERSION}.tar.gz
     tar xf yasm.tar.gz
     rm -f yasm.tar.gz
     cd yasm*
@@ -44,7 +46,7 @@ wait
 {
     git clone --depth 1 https://code.videolan.org/videolan/x264.git
     cd x264
-    ./configure --enable-shared --prefix=${OLIVE_INSTALL_PREFIX}
+    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared --enable-pic --disable-cli
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -66,11 +68,11 @@ wait
 
 # Set up libmp3lame
 {
-    wget --no-verbose -O lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
+    curl -fLsS -o lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
     tar xf lame.tar.gz
     rm -f lame.tar.gz
     cd lame*
-    ./configure --enable-nasm --prefix=${OLIVE_INSTALL_PREFIX}
+    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared --enable-nasm --disable-frontend
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -79,11 +81,11 @@ wait
 
 # Set up libopus
 {
-    wget --no-verbose -O opus.tar.gz https://archive.mozilla.org/pub/opus/opus-${OPUS_VERSION}.tar.gz
+    curl -fLsS -o opus.tar.gz https://archive.mozilla.org/pub/opus/opus-${OPUS_VERSION}.tar.gz
     tar xf opus.tar.gz
     rm -f opus.tar.gz
     cd opus*
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX}
+    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -94,7 +96,7 @@ wait
 {
     git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
     cd libvpx
-    ./configure --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --prefix=${OLIVE_INSTALL_PREFIX}
+    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared --enable-pic --enable-vp9-highbitdepth --as=yasm --disable-examples --disable-unit-tests --disable-docs --disable-install-bins
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -104,26 +106,31 @@ wait
 # join all jobs
 wait
 
-# TODO: Make wget less verbose about the download progress
-# Maybe --progress=dot:mega --no-verbose ? In .wgetrc?
-wget --no-verbose -O ffmpeg.tar.xz https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.xz
+curl -fLsS -o ffmpeg.tar.xz https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.xz
 tar xf ffmpeg.tar.xz
 cd ffmpeg*
+
+# TODO: --enable-debug?
 PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH ./configure \
-    --prefix=${OLIVE_INSTALL_PREFIX} \
-    --extra-libs=-lpthread \
-    --extra-libs=-lm \
+    --disable-doc \
+    --disable-ffplay \
     --enable-gpl \
     --enable-version3 \
+    --enable-shared \
     --enable-libfreetype \
     --enable-libmp3lame \
     --enable-libopus \
     --enable-libvpx \
     --enable-libx264 \
-    --enable-libx265
+    --enable-libx265 \
+    --prefix="${OLIVE_INSTALL_PREFIX}" \
+    --extra-libs=-lpthread \
+    --extra-libs=-lm \
+    --extra-cflags="-I${OLIVE_INSTALL_PREFIX}/include" \
+    --extra-ldflags="-L${OLIVE_INSTALL_PREFIX}/lib"
 make -j${NUM_JOBS}
 make install
 cd ..
 rm -rf ffmpeg*
 
-# TODO: Strip or build without executables /bin/ffmpeg and /bin/ffprobe?
+# TODO: Strip or build without executables /bin/ffmpeg, /bin/ffprobe etc.?

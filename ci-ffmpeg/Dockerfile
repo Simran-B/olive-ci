@@ -4,8 +4,7 @@
 # Build image (default):
 #  docker build -t olivevideoeditor/ci-package-ffmpeg:4.2.4 -f ci-ffmpeg/Dockerfile .
 
-# TODO: ARG OLIVE_ORG=olivevideoeditor
-ARG OLIVE_ORG=simranb
+ARG OLIVE_ORG=olivevideoeditor
 ARG CI_COMMON_VERION=2
 ARG FFMPEG_VERSION=4.2.4
 ARG NASM_VERSION=2.15.03
