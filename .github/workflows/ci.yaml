@@ -52,8 +52,6 @@ jobs:
       - name: Build
         working-directory: build
         run: |
-          # github.workspace = /home/runner/work/olive-ci/olive-ci
-          # pwd (container)  = /__w/olive-ci/olive-ci/build
           cmake --build .
 
       - name: Install
