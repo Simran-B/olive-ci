@@ -4,35 +4,6 @@ on:
   push:
     branches:
       - master
-  # Enable manual invocation
-  # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
-  workflow_dispatch:
-    inputs:
-      build-type:
-        description: Config (Debug, Release, RelWithDebInfo, MinSizeRel)
-        required: false
-        default: RelWithDebInfo
-      cc-compiler:
-        description: C compiler (gcc or clang)
-        required: false
-        default: gcc
-      cxx-compiler:
-        description: C++ compiler (g++ or clang++)
-        required: false
-        default: g++
-      configure-extra:
-        description: Extra CMake configure arguments
-        required: false
-        default: ''
-      build-extra:
-        description: Extra CMake build arguments
-        required: false
-        default: ''
-      install-extra:
-        description: Extra CMake install arguments
-        required: false
-        default: ''
-
 jobs:
   linux:
     strategy:
@@ -56,14 +27,14 @@ jobs:
             vfx-cy: 2021
             ci-common-version: 2
     name: |
-      ${{ matrix.os-name || 'Linux (CentOS 7)'}}
-      <${{ matrix.compiler-name || github.event.inputs.cc-compiler }},
-       ${{ matrix.build-type || github.event.inputs.build-type }},
-       VFX CY${{ matrix.vfx-cy || 2021 }},
-       CI Common Version ${{ matrix.ci-common-version || 2}}>
+      ${{ matrix.os-name }}
+      <${{ matrix.compiler-name }},
+       ${{ matrix.build-type }},
+       VFX CY${{ matrix.vfx-cy }},
+       CI Common Version ${{ matrix.ci-common-version }}>
     runs-on: ubuntu-latest
     container:
-      image: olivevideoeditor/ci-olive:${{ matrix.vfx-cy || 2021 }}.${{ matrix.ci-common-version || 2}}
+      image: olivevideoeditor/ci-olive:${{ matrix.vfx-cy }}.${{ matrix.ci-common-version }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -74,23 +45,21 @@ jobs:
           mkdir build
           cd build
           cmake .. -G "Ninja" \
-            -DCMAKE_BUILD_TYPE="${{ matrix.build-type || github.event.inputs.build-type }}" \
-            -DCMAKE_C_COMPILER="${{ matrix.cc-compiler || github.event.inputs.cc-compiler }}" \
-            -DCMAKE_CXX_COMPILER="${{ matrix.cxx-compiler || github.event.inputs.cxx-compiler }}" \
-            ${{ github.event.inputs.configure-extra }}
+            -DCMAKE_BUILD_TYPE="${{ matrix.build-type }}" \
+            -DCMAKE_C_COMPILER="${{ matrix.cc-compiler }}" \
+            -DCMAKE_CXX_COMPILER="${{ matrix.cxx-compiler }}"
 
       - name: Build
         working-directory: build
         run: |
-          # TODO: What path is this in case of a container?
-          echo "github.workspace: ${{ github.workspace }}"
-          echo "pwd: $(pwd)"
-          cmake --build . ${{ github.event.inputs.build-extra }}
+          # github.workspace = /home/runner/work/olive-ci/olive-ci
+          # pwd (container)  = /__w/olive-ci/olive-ci/build
+          cmake --build .
 
       - name: Install
         working-directory: build
         run: |
-          cmake --install app --prefix appdir/usr ${{ github.event.inputs.install-extra }}
+          cmake --install app --prefix appdir/usr
 
       - name: Bundle
         id: bundle
@@ -103,7 +72,7 @@ jobs:
           -appimage \
           --appimage-extract-and-run
           filename=$(echo Olive*.AppImage)
-          echo "::set-output name=artifact::${filename/.AppImage/-${{ matrix.cc-compiler || github.event.inputs.cc-compiler }}.AppImage}"
+          echo "::set-output name=artifact::${filename/.AppImage/-${{ matrix.cc-compiler }}.AppImage}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
