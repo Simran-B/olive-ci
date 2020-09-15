@@ -8,42 +8,89 @@ on:
   # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
   workflow_dispatch:
     inputs:
+      build-type:
+        description: Config (Debug, Release, RelWithDebInfo, MinSizeRel)
+        required: false
+        default: RelWithDebInfo
+      cc-compiler:
+        description: C compiler (gcc or clang)
+        required: false
+        default: gcc
+      cxx-compiler:
+        description: C++ compiler (g++ or clang++)
+        required: false
+        default: g++
+      configure-extra:
+        description: Extra CMake configure arguments
+        required: false
+        default: ''
+      build-extra:
+        description: Extra CMake build arguments
+        required: false
+        default: ''
+      install-extra:
+        description: Extra CMake install arguments
+        required: false
+        default: ''
 
 jobs:
   linux:
-    name: Build Olive (CentOS 7)
+    strategy:
+      matrix:
+        build: [1, 2]
+        include:
+          - build: 1
+            build-type: RelWithDebInfo
+            cc-compiler: gcc
+            cxx-compiler: g++
+            compiler-name: GCC 9.3.1
+            os-name: Linux (CentOS 7)
+            vfx-cy: 2021
+            ci-common-version: 2
+          - build: 2
+            build-type: RelWithDebInfo
+            cc-compiler: clang
+            cxx-compiler: clang++
+            os-name: Linux (CentOS 7)
+            compiler-name: Clang 10.0.0
+            vfx-cy: 2021
+            ci-common-version: 2
+    name: |
+      ${{ matrix.os-name || 'Linux (CentOS 7)'}}
+      <${{ matrix.compiler-name || github.event.inputs.cc-compiler }},
+       ${{ matrix.build-type || github.event.inputs.build-type }},
+       VFX CY${{ matrix.vfx-cy || 2021 }},
+       CI Common Version ${{ matrix.ci-common-version || 2}}>
     runs-on: ubuntu-latest
     container:
-      image: olivevideoeditor/ci-olive:2021.2
+      image: olivevideoeditor/ci-olive:${{ matrix.vfx-cy || 2021 }}.${{ matrix.ci-common-version || 2}}
     steps:
       - uses: actions/checkout@v2
         with:
           repository: olive-editor/olive
 
       - name: Configure
-        # TODO: Use manual input over hard-coded value / matrix setting
-        # ${{ github.event.inputs.cxx-compiler || matrix.cxx-compiler }} ?
-        # Mutually exclusive steps - if: ${{ github.event. workflow_dispatch github.event.inputs.cxx-compiler == '' / != ''
-        # https://github.community/t/github-actions-manual-trigger-approvals/16233/83
-        #with:
-        #  cxx-compiler: g++
-        #  cc-compiler: gcc
         run: |
           mkdir build
           cd build
-          cmake .. -G "Ninja"
+          cmake .. -G "Ninja" \
+            -DCMAKE_BUILD_TYPE="${{ matrix.build-type || github.event.inputs.build-type }}" \
+            -DCMAKE_C_COMPILER="${{ matrix.cc-compiler || github.event.inputs.cc-compiler }}" \
+            -DCMAKE_CXX_COMPILER="${{ matrix.cxx-compiler || github.event.inputs.cxx-compiler }}" \
+            ${{ github.event.inputs.configure-extra }}
 
       - name: Build
-        # TODO: Be explicit about dir? Is this persistent between steps?
-        # working-directory: ${{ github.workspace }}/build
         working-directory: build
         run: |
-          cmake --build .
+          # TODO: What path is this in case of a container?
+          echo "github.workspace: ${{ github.workspace }}"
+          echo "pwd: $(pwd)"
+          cmake --build . ${{ github.event.inputs.build-extra }}
 
       - name: Install
         working-directory: build
         run: |
-          cmake --install app --prefix appdir/usr
+          cmake --install app --prefix appdir/usr ${{ github.event.inputs.install-extra }}
 
       - name: Bundle
         id: bundle
@@ -55,10 +102,11 @@ jobs:
           appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop \
           -appimage \
           --appimage-extract-and-run
-          echo "::set-output name=artifact::$(ls Olive*.AppImage)"
+          filename=$(echo Olive*.AppImage)
+          echo "::set-output name=artifact::${filename/.AppImage/-${{ matrix.cc-compiler || github.event.inputs.cc-compiler }}.AppImage}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.bundle.outputs.artifact }}.zip
+          name: ${{ steps.bundle.outputs.artifact }}
           path: build/Olive*.AppImage
