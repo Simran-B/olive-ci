@@ -11,6 +11,7 @@ on:
 jobs:
   linux:
     strategy:
+      fail-fast: false
       matrix:
         build: [1, 2]
         include:
