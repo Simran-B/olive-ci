@@ -74,7 +74,7 @@ jobs:
           -appimage \
           --appimage-extract-and-run
           filename=$(echo Olive*.AppImage)
-          echo "::set-output name=artifact::${filename/.AppImage/-${{ matrix.cc-compiler }}.AppImage}"
+          echo "::set-output name=artifact::${filename/x86_64/Linux-x86_64-${{ matrix.cc-compiler }}}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
