@@ -69,6 +69,7 @@ jobs:
         env:
           ARCH: x86_64
         run: |
+          export VERSION=${GITHUB_SHA::8}
           /usr/local/linuxdeployqt-x86_64.AppImage \
           appdir/usr/share/applications/org.olivevideoeditor.Olive.desktop \
           -appimage \
