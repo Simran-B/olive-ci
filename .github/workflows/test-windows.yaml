@@ -37,7 +37,7 @@ jobs:
       - name: Already in PATH?
         run: |
           where makensis
-      # ${{ env.PATH }} results in empty string,
+      # BROKEN: ${{ env.PATH }} results in empty string,
       # i.e. PATH is mostly cleared and thus where command cannot be found anymore
       #- name: Pass env (action syntax)
       #  env:
@@ -45,12 +45,14 @@ jobs:
       #  run: |
       #    echo %PATH%
       #    where makensis
-      - name: Pass env (shell syntax)
-        env:
-          PATH: C:\Program Files (x86)\NSIS;%PATH%
-        run: |
-            echo %PATH%
-            where makensis
+
+      # BROKEN: %PATH% isn't resolved either
+      #- name: Pass env (shell syntax)
+      #  env:
+      #    PATH: C:\Program Files (x86)\NSIS;%PATH%
+      #  run: |
+      #      echo %PATH%
+      #      where makensis
       - name: Set env (shell)
         run: |
           set PATH=C:\Program Files (x86)\NSIS;%PATH%
@@ -84,6 +86,7 @@ jobs:
           Remove-Item Alias:curl
           curl --version
       - name: Persistent?
+        continue-on-error: true
         run: |
           curl --version
       - name: Remove alias (PowerShell >= 6, windows-2019 env has 7)
@@ -91,5 +94,6 @@ jobs:
           Remove-Alias curl
           curl --version
       - name: Persistent?
+        continue-on-error: true
         run: |
           curl --version
