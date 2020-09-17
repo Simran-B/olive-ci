@@ -106,13 +106,13 @@ jobs:
           Write-Host "::set-output name=exists::"
       - name: Type check
         run: |
-          echo success boolean? ${{ steps.remove-alias-ps6.outputs.success == true }}
-          echo success string? ${{ steps.remove-alias-ps6.outputs.success == 'true' }}
-          echo.
-          echo exists null? ${{ steps.remove-alias-ps6.outputs.success == null }}
-          echo exists boolean? ${{ steps.remove-alias-ps6.outputs.success == true }}
-          echo exists string? ${{ steps.remove-alias-ps6.outputs.success == '' }}
-          echo exists JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.success) }}
+          Write-Host success boolean? ${{ steps.remove-alias-ps6.outputs.success == true }}
+          Write-Host success string? ${{ steps.remove-alias-ps6.outputs.success == 'true' }}
+          Write-Host
+          Write-Host exists null? ${{ steps.remove-alias-ps6.outputs.success == null }}
+          Write-Host exists boolean? ${{ steps.remove-alias-ps6.outputs.success == true }}
+          Write-Host exists string? ${{ steps.remove-alias-ps6.outputs.success == '' }}
+          Write-Host exists JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.success) }}
       - name: Persistent?
         continue-on-error: true
         run: |
