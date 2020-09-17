@@ -77,7 +77,9 @@ jobs:
           Write-Output "Olive $($env:GITHUB_SHA.substring(0, 8))"
       - name: Set env
         run: |
-          Write-Output "::set-env name=PATH::C:\Program Files (x86)\NSIS;$env:PATH"
+          New-Item new_location -ItemType Directory
+          Copy-Item "C:\Program Files (x86)\NSIS\makensis.exe" new_location
+          Write-Output "::set-env name=PATH::$(Join-Path $(Get-Location) new_location);$env:PATH"
           Write-Output $env:PATH
           (Get-Command makensis).Path
       - name: Remove alias (PowerShell < 6)
