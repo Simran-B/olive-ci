@@ -119,9 +119,14 @@ jobs:
           Write-Host
           Write-Host exists null? ${{ steps.set-outputs.outputs.exists == null }}
           Write-Host exists boolean? ${{ steps.set-outputs.outputs.exists == true }}
-          Write-Host exists string? ${{ steps.set-outputs.outputs.exists == '' }}
+          Write-Host exists empty string? ${{ steps.set-outputs.outputs.exists == '' }}
           Write-Host exists JSON empty string? ${{ toJSON(steps.set-outputs.outputs.exists) == '""' }}
           Write-Host exists JSON: ${{ toJSON(steps.set-outputs.outputs.exists) }}
+          Write-Host
+          Write-Host null true? ${{ null == true }}
+          Write-Host null false? ${{ null == false }}
+          Write-Host null empty string? ${{ null == '' }}
+          Write-Host null JSON empty string? ${{ toJSON(null) == '""' }}
       - name: Persistent?
         continue-on-error: true
         run: |
