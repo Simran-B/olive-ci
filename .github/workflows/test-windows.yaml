@@ -65,6 +65,9 @@ jobs:
           md another_location
           copy "C:\Program Files (x86)\NSIS\makensis.exe" another_location
           echo ::set-env name=PATH::%CD%\another_location;%PATH%
+      # set-env changes only visible to subsequent steps!
+      - name: Updated?
+        run: |
           echo %PATH%
           where makensis
 
