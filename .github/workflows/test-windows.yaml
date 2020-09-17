@@ -110,11 +110,12 @@ jobs:
         run: |
           Write-Host success boolean? ${{ steps.remove-alias-ps6.outputs.success == true }}
           Write-Host success string? ${{ steps.remove-alias-ps6.outputs.success == 'true' }}
+          Write-Host success JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.success) }}
           Write-Host
-          Write-Host exists null? ${{ steps.remove-alias-ps6.outputs.success == null }}
-          Write-Host exists boolean? ${{ steps.remove-alias-ps6.outputs.success == true }}
-          Write-Host exists string? ${{ steps.remove-alias-ps6.outputs.success == '' }}
-          Write-Host exists JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.success) }}
+          Write-Host exists null? ${{ steps.remove-alias-ps6.outputs.exists == null }}
+          Write-Host exists boolean? ${{ steps.remove-alias-ps6.outputs.exists == true }}
+          Write-Host exists string? ${{ steps.remove-alias-ps6.outputs.exists == '' }}
+          Write-Host exists JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.exists) }}
       - name: Persistent?
         continue-on-error: true
         run: |
