@@ -91,7 +91,8 @@ jobs:
         continue-on-error: true
         run: |
           curl --version
-      - name: Remove alias (PowerShell >= 6, windows-2019 env has 7)
+      - name: Remove alias (PowerShell >= 6)
+        continue-on-error: true
         run: |
           Remove-Alias curl
           curl --version
@@ -99,3 +100,4 @@ jobs:
         continue-on-error: true
         run: |
           curl --version
+        if: success()
