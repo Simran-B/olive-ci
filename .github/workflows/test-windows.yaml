@@ -55,14 +55,16 @@ jobs:
       #      where makensis
       - name: Set env (shell)
         run: |
-          md another_location
-          copy C:\Program Files (x86)\NSIS\makensis.exe another_location
-          set PATH=%CD%\another_location;%PATH%
+          md new_location
+          copy "C:\Program Files (x86)\NSIS\makensis.exe" new_location
+          set PATH=%CD%\new_location;%PATH%
           echo %PATH%
           where makensis
       - name: Set env (action)
         run: |
-          echo ::set-env name=PATH::C:\Program Files (x86)\NSIS;%PATH%
+          md another_location
+          copy "C:\Program Files (x86)\NSIS\makensis.exe" another_location
+          echo ::set-env name=PATH::%CD%\another_location;%PATH%
           echo %PATH%
           where makensis
 
@@ -78,9 +80,9 @@ jobs:
           Write-Output "Olive $($env:GITHUB_SHA.substring(0, 8))"
       - name: Set env
         run: |
-          New-Item new_location -ItemType Directory
-          Copy-Item "C:\Program Files (x86)\NSIS\makensis.exe" new_location
-          Write-Output "::set-env name=PATH::$(Join-Path $(Get-Location) new_location);$env:PATH"
+          New-Item other_location -ItemType Directory
+          Copy-Item "C:\Program Files (x86)\NSIS\makensis.exe" other_location
+          Write-Output "::set-env name=PATH::$(Join-Path $(Get-Location) other_location);$env:PATH"
           Write-Output $env:PATH
           (Get-Command makensis).Path
       - name: Remove alias (PowerShell < 6)
