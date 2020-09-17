@@ -55,7 +55,9 @@ jobs:
       #      where makensis
       - name: Set env (shell)
         run: |
-          set PATH=C:\Program Files (x86)\NSIS;%PATH%
+          md another_location
+          copy C:\Program Files (x86)\NSIS\makensis.exe another_location
+          set PATH=%CD%\another_location;%PATH%
           echo %PATH%
           where makensis
       - name: Set env (action)
