@@ -94,12 +94,14 @@ jobs:
         run: |
           curl --version
       - name: Remove alias (PowerShell >= 6)
+        id: remove-alias-ps6
         continue-on-error: true
         run: |
           Remove-Alias curl
           curl --version
+          Write-Host "::set-output name=success::true"
       - name: Persistent?
         continue-on-error: true
         run: |
           curl --version
-        if: success()
+        if: steps.remove-alias-ps6.outputs.success
