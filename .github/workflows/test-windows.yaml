@@ -104,10 +104,14 @@ jobs:
         run: |
           Remove-Alias curl
           curl --version
+          Write-Host "::set-output name=success::true"
+      - name: Set outputs
+        run: |
           Write-Host "::set-output name=okay::true"
           Write-Host "::set-output name=exists::"
       - name: Type check
         run: |
+          Write-Host okay null? ${{ steps.remove-alias-ps6.outputs.okay == null }}
           Write-Host okay boolean? ${{ steps.remove-alias-ps6.outputs.okay == true }}
           Write-Host okay string? ${{ steps.remove-alias-ps6.outputs.okay == 'true' }}
           Write-Host okay JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.okay) }}
@@ -120,4 +124,4 @@ jobs:
         continue-on-error: true
         run: |
           curl --version
-        if: steps.remove-alias-ps6.outputs.okay
+        if: steps.remove-alias-ps6.outputs.success
