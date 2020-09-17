@@ -7,13 +7,10 @@ on:
     branches:
       - windows-test
 
-env:
-  RUNS_ON: windows-latest
-
 jobs:
   set-env:
     name: set-env test
-    runs-on: ${{ env.RUNS_ON }}
+    runs-on: windows-latest
     steps:
       - name: with quotes
         run: |
@@ -30,7 +27,7 @@ jobs:
 
   find-nsis:
     name: Find NSIS
-    runs-on: ${{ env.RUNS_ON }}
+    runs-on: windows-latest
     steps:
       - name: Already in PATH?
         run: |
