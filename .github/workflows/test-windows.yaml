@@ -16,6 +16,7 @@ jobs:
   set-env:
     name: set-env test
     runs-on: windows-latest
+    continue-on-error: true
     steps:
       - name: with quotes
         run: |
@@ -27,22 +28,25 @@ jobs:
 
       - name: print
         run: |
-          echo %PKGNAME1% ^| ${{ toJSON( env.PKGNAME1 ) }}
-          echo %PKGNAME2% ^| ${{ toJSON( env.PKGNAME2 ) }}
+          echo PKGNAME1 = %PKGNAME1% ^| JSON: ${{ toJSON( env.PKGNAME1 ) }}
+          echo PKGNAME2 = %PKGNAME2% ^| JSON: ${{ toJSON( env.PKGNAME2 ) }}
 
   find-nsis:
     name: Find NSIS
     runs-on: windows-latest
+    continue-on-error: true
     steps:
       - name: Already in PATH?
         run: |
           where makensis
-      - name: Pass env (action syntax)
-        env:
-          PATH: C:\Program Files (x86)\NSIS;${{ env.PATH }}
-        run: |
-          echo %PATH%
-          where makensis
+      # ${{ env.PATH }} results in empty string,
+      # i.e. PATH is mostly cleared and thus where command cannot be found anymore
+      #- name: Pass env (action syntax)
+      #  env:
+      #    PATH: C:\Program Files (x86)\NSIS;${{ env.PATH }}
+      #  run: |
+      #    echo %PATH%
+      #    where makensis
       - name: Pass env (shell syntax)
         env:
           PATH: C:\Program Files (x86)\NSIS;%PATH%
@@ -63,6 +67,7 @@ jobs:
   powershell:
     name: PowerShell test
     runs-on: windows-latest
+    continue-on-error: true
     defaults:
       run:
         shell: powershell
