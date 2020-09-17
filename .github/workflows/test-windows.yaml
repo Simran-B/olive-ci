@@ -1,5 +1,6 @@
-# What if name is omitted?
-#name: Windows Test
+# If name is omitted, then the path to file is used, e.g.
+# .github/workflows/test-windows.yaml
+name: Windows Test
 
 on:
   push:
@@ -40,9 +41,9 @@ jobs:
           echo %PATH%
           where makensis
       - name: Pass env (shell syntax)
-          env:
-            PATH: C:\Program Files (x86)\NSIS;%PATH%
-          run: |
+        env:
+          PATH: C:\Program Files (x86)\NSIS;%PATH%
+        run: |
             echo %PATH%
             where makensis
       - name: Set env (shell)
