@@ -7,6 +7,11 @@ on:
     branches:
       - windows-test
 
+defaults:
+  run:
+    # Windows default is powershell!
+    shell: cmd
+
 jobs:
   set-env:
     name: set-env test
@@ -54,3 +59,19 @@ jobs:
           echo ::set-env name=PATH::C:\Program Files (x86)\NSIS;%PATH%
           echo %PATH%
           where makensis
+
+  powershell:
+    name: PowerShell test
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
+    steps:
+      - name: Substring
+        run: |
+          Write-Output "Olive $($env:GITHUB_SHA.substring(0, 8))"
+      - name: Set env
+        run: |
+          Write-Output "::set-env name=PATH::C:\Program Files (x86)\NSIS;$env:PATH"
+          Write-Output $env:PATH
+          (Get-Command makensis).Path
