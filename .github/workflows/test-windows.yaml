@@ -16,7 +16,6 @@ jobs:
   set-env:
     name: set-env test
     runs-on: windows-latest
-    continue-on-error: true
     steps:
       - name: with quotes
         run: |
@@ -34,7 +33,6 @@ jobs:
   find-nsis:
     name: Find NSIS
     runs-on: windows-latest
-    continue-on-error: true
     steps:
       - name: Already in PATH?
         run: |
@@ -67,7 +65,6 @@ jobs:
   powershell:
     name: PowerShell test
     runs-on: windows-latest
-    continue-on-error: true
     defaults:
       run:
         shell: powershell
