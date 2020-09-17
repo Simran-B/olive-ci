@@ -1,0 +1,57 @@
+# What if name is omitted?
+#name: Windows Test
+
+on:
+  push:
+    branches:
+      - windows-test
+
+defaults:
+  runs-on: windows-latest
+
+
+jobs:
+  set-env:
+    name: set-env test
+    steps:
+      - name: with quotes
+        run: |
+          echo "::set-env name=pkgname1::Olive hash = %GITHUB_SHA:~0,8%"
+
+      - name: without quotes
+        run: |
+          echo ::set-env name=pkgname2::Olive hash = %GITHUB_SHA:~0,8%
+
+      - name: print
+        run: |
+          echo %PKGNAME1% ^| ${{ toJSON( env.PKGNAME1 ) }}
+          echo %PKGNAME2% ^| ${{ toJSON( env.PKGNAME2 ) }}
+
+  find-nsis:
+    name: Find NSIS
+    steps:
+      - name: Already in PATH?
+        run: |
+          where makensis
+      - name: Pass env (action syntax)
+        env:
+          PATH: C:\Program Files (x86)\NSIS;${{ env.PATH }}
+        run: |
+          echo %PATH%
+          where makensis
+      - name: Pass env (shell syntax)
+          env:
+            PATH: C:\Program Files (x86)\NSIS;%PATH%
+          run: |
+            echo %PATH%
+            where makensis
+      - name: Set env (shell)
+        run: |
+          set PATH=C:\Program Files (x86)\NSIS;%PATH%
+          echo %PATH%
+          where makensis
+      - name: Set env (action)
+        run: |
+          echo ::set-env name=PATH::C:\Program Files (x86)\NSIS;%PATH%
+          echo %PATH%
+          where makensis
