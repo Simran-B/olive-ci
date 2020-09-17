@@ -106,20 +106,22 @@ jobs:
           curl --version
           Write-Host "::set-output name=success::true"
       - name: Set outputs
+        id: set-outputs
         run: |
           Write-Host "::set-output name=okay::true"
           Write-Host "::set-output name=exists::"
       - name: Type check
         run: |
-          Write-Host okay null? ${{ steps.remove-alias-ps6.outputs.okay == null }}
-          Write-Host okay boolean? ${{ steps.remove-alias-ps6.outputs.okay == true }}
-          Write-Host okay string? ${{ steps.remove-alias-ps6.outputs.okay == 'true' }}
-          Write-Host okay JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.okay) }}
+          Write-Host okay null? ${{ steps.set-outputs.outputs.okay == null }}
+          Write-Host okay boolean? ${{ steps.set-outputs.outputs.okay == true }}
+          Write-Host okay string? ${{ steps.set-outputs.outputs.okay == 'true' }}
+          Write-Host okay JSON: ${{ toJSON(steps.set-outputs.outputs.okay) }}
           Write-Host
-          Write-Host exists null? ${{ steps.remove-alias-ps6.outputs.exists == null }}
-          Write-Host exists boolean? ${{ steps.remove-alias-ps6.outputs.exists == true }}
-          Write-Host exists string? ${{ steps.remove-alias-ps6.outputs.exists == '' }}
-          Write-Host exists JSON: ${{ toJSON(steps.remove-alias-ps6.outputs.exists) }}
+          Write-Host exists null? ${{ steps.set-outputs.outputs.exists == null }}
+          Write-Host exists boolean? ${{ steps.set-outputs.outputs.exists == true }}
+          Write-Host exists string? ${{ steps.set-outputs.outputs.exists == '' }}
+          Write-Host exists JSON empty string? ${{ toJSON(steps.set-outputs.outputs.exists) == '""' }}
+          Write-Host exists JSON: ${{ toJSON(steps.set-outputs.outputs.exists) }}
       - name: Persistent?
         continue-on-error: true
         run: |
