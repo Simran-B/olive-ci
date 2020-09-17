@@ -86,6 +86,8 @@ jobs:
           New-Item other_location -ItemType Directory
           Copy-Item "C:\Program Files (x86)\NSIS\makensis.exe" other_location
           Write-Output "::set-env name=PATH::$(Join-Path $(Get-Location) other_location);$env:PATH"
+      - name: Updated?
+        run: |
           Write-Output $env:PATH
           (Get-Command makensis).Path
       - name: Remove alias (PowerShell < 6)
