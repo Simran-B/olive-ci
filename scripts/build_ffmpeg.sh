@@ -19,7 +19,8 @@ set -ex
     rm -f nasm.tar.xz
     cd nasm*
     ./autogen.sh
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX}
+    ./configure \
+      --prefix=${OLIVE_INSTALL_PREFIX}
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -32,7 +33,8 @@ set -ex
     tar xf yasm.tar.gz
     rm -f yasm.tar.gz
     cd yasm*
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX}
+    ./configure \
+      --prefix=${OLIVE_INSTALL_PREFIX}
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -46,7 +48,11 @@ wait
 {
     git clone --depth 1 https://code.videolan.org/videolan/x264.git
     cd x264
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared --enable-pic --disable-cli
+    ./configure \
+      --prefix=${OLIVE_INSTALL_PREFIX} \
+      --enable-shared \
+      --enable-pic \
+      --disable-cli
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -57,9 +63,12 @@ wait
 {
     # BitBucket dropped support for Mercurial repos
     #hg clone https://bitbucket.org/multicoreware/x265
-    git clone https://bitbucket.org/multicoreware/x265_git.git x265
+    git clone --depth 1 https://bitbucket.org/multicoreware/x265_git.git x265
     cd x265/build/linux
-    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${OLIVE_INSTALL_PREFIX} ../../source
+    cmake \
+      -G "Unix Makefiles" \
+      -DCMAKE_INSTALL_PREFIX=${OLIVE_INSTALL_PREFIX} \
+      ../../source
     make -j${NUM_JOBS}
     make install
     cd ../../..
@@ -72,7 +81,11 @@ wait
     tar xf lame.tar.gz
     rm -f lame.tar.gz
     cd lame*
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared --enable-nasm --disable-frontend
+    ./configure \
+      --prefix=${OLIVE_INSTALL_PREFIX} \
+      --enable-shared \
+      --enable-nasm \
+      --disable-frontend
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -85,7 +98,9 @@ wait
     tar xf opus.tar.gz
     rm -f opus.tar.gz
     cd opus*
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared
+    ./configure \
+      --prefix=${OLIVE_INSTALL_PREFIX} \
+      --enable-shared
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -96,7 +111,16 @@ wait
 {
     git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
     cd libvpx
-    ./configure --prefix=${OLIVE_INSTALL_PREFIX} --enable-shared --enable-pic --enable-vp9-highbitdepth --as=yasm --disable-examples --disable-unit-tests --disable-docs --disable-install-bins
+    ./configure 
+      --prefix=${OLIVE_INSTALL_PREFIX} \
+      --enable-shared \
+      --enable-pic \
+      --enable-vp9-highbitdepth \
+      --as=yasm \
+      --disable-examples \
+      --disable-unit-tests \
+      --disable-docs \
+      --disable-install-bins
     make -j${NUM_JOBS}
     make install
     cd ..
@@ -112,22 +136,22 @@ cd ffmpeg*
 
 # TODO: --enable-debug?
 PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH ./configure \
-    --disable-doc \
-    --disable-ffplay \
-    --enable-gpl \
-    --enable-version3 \
-    --enable-shared \
-    --enable-libfreetype \
-    --enable-libmp3lame \
-    --enable-libopus \
-    --enable-libvpx \
-    --enable-libx264 \
-    --enable-libx265 \
-    --prefix="${OLIVE_INSTALL_PREFIX}" \
-    --extra-libs=-lpthread \
-    --extra-libs=-lm \
-    --extra-cflags="-I${OLIVE_INSTALL_PREFIX}/include" \
-    --extra-ldflags="-L${OLIVE_INSTALL_PREFIX}/lib"
+  --disable-doc \
+  --disable-ffplay \
+  --enable-gpl \
+  --enable-version3 \
+  --enable-shared \
+  --enable-libfreetype \
+  --enable-libmp3lame \
+  --enable-libopus \
+  --enable-libvpx \
+  --enable-libx264 \
+  --enable-libx265 \
+  --prefix="${OLIVE_INSTALL_PREFIX}" \
+  --extra-libs=-lpthread \
+  --extra-libs=-lm \
+  --extra-cflags="-I${OLIVE_INSTALL_PREFIX}/include" \
+  --extra-ldflags="-L${OLIVE_INSTALL_PREFIX}/lib"
 make -j${NUM_JOBS}
 make install
 cd ..
