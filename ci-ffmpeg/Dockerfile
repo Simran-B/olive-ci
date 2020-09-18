@@ -5,7 +5,7 @@
 #  docker build -t olivevideoeditor/ci-package-ffmpeg:4.2.4 -f ci-ffmpeg/Dockerfile .
 
 ARG OLIVE_ORG=olivevideoeditor
-ARG CI_COMMON_VERION=2
+ARG CI_COMMON_VERSION=2
 ARG FFMPEG_VERSION=4.2.4
 ARG NASM_VERSION=2.15.03
 ARG YASM_VERSION=1.3.0
@@ -14,10 +14,10 @@ ARG OPUS_VERSION=1.3.1
 # TODO: Make version of x264, x265 and libvpx selectable?
 ARG NUM_JOBS=2
 
-FROM ${OLIVE_ORG}/ci-common:${CI_COMMON_VERION} as ci-ffmpeg
+FROM ${OLIVE_ORG}/ci-common:${CI_COMMON_VERSION} as ci-ffmpeg
 
 ARG OLIVE_ORG
-ARG CI_COMMON_VERION
+ARG CI_COMMON_VERSION
 ARG FFMPEG_VERSION
 ARG NASM_VERSION
 ARG YASM_VERSION
@@ -39,7 +39,7 @@ COPY scripts/build_ffmpeg.sh \
      /tmp/
 
 ENV OLIVE_ORG=${OLIVE_ORG} \
-    CI_COMMON_VERION=${CI_COMMON_VERION} \
+    CI_COMMON_VERSION=${CI_COMMON_VERSION} \
     FFMPEG_VERSION=${FFMPEG_VERSION} \
     NASM_VERSION=${NASM_VERSION} \
     YASM_VERSION=${YASM_VERSION} \
