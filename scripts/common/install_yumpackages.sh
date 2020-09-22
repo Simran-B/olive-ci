@@ -49,7 +49,7 @@ if [[ $DTS_VERSION == 6 ]]; then
 fi
 
 yum install -y --setopt=tsflags=nodocs \
-    devtoolset-$DTS_VERSION-toolchain
+    "devtoolset-$DTS_VERSION-toolchain"
 
 yum install -y epel-release
 
@@ -68,7 +68,7 @@ yum install -y \
 yum clean all
 
 # HACK: Qt5GuiConfigExtras.cmake expects libGL.so in /usr/local/lib64 but it gets installed to /usr/lib64
-cd /usr/local/lib64/ && ln -s /usr/lib64/libGL.so
+ln -s /usr/lib64/libGL.so /usr/local/lib64/
 # Alternatively, we could edit /usr/local/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake
 # - _qt5gui_find_extra_libs(OPENGL "/usr/local/lib64/libGL.so" "" "")
 # + _qt5gui_find_extra_libs(OPENGL "/usr/lib64/libGL.so" "" "")
