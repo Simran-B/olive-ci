@@ -70,3 +70,13 @@ rsync -av \
     --prune-empty-dirs \
     . "${OLIVE_INSTALL_PREFIX}/crashpad"
 
+cd ../..
+
+# Build Breakpad for minidump_stackwalk
+mkdir breakpad
+cd breakpad
+fetch breakpad
+cd src
+./configure --prefix="${OLIVE_INSTALL_PREFIX}/breakpad"
+make
+make install -j$(nproc)
