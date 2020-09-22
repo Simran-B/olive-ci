@@ -34,6 +34,4 @@ RUN /tmp/before_build.sh && \
 
 FROM scratch as ci-package-crashpad
 
-# TODO: Only copy *.h and crashpad_handler?
-# Can't run any commands here though, because it's an empty container
-COPY --from=ci-crashpad /package/crashpad/crashpad/ /crashpad/
+COPY --from=ci-crashpad /package /
