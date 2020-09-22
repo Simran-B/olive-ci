@@ -15,7 +15,7 @@ ARG NUM_JOBS=1
 LABEL maintainer="olivevideoeditor@gmail.com"
 
 LABEL org.opencontainers.image.name="olivevideoeditor/ffmpeg-base"
-LABEL org.opencontainers.image.description="CentOS Build Image for FFMPEG"
+LABEL org.opencontainers.image.description="CentOS Build Image for FFmpeg"
 LABEL org.opencontainers.image.url="http://olivevideoeditor.org"
 LABEL org.opencontainers.image.source="https://github.com/olive-editor/olive"
 LABEL org.opencontainers.image.vendor="Olive Team"
