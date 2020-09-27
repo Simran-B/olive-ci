@@ -10,6 +10,6 @@ jobs:
     steps:
       - name: GitHub Event
         run: |
-          cat <<EOF
+          cat << 'EOF'
             ${{ toJSON(github.event) }}
           EOF
