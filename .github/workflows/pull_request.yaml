@@ -31,6 +31,10 @@ jobs:
           github.event_name == 'pull_request_target' &&
           github.event.pull_request.head.repo.full_name != github.repository
 
+      - name: Test file content
+        run: |
+          cat ./test/pr_test.txt
+
       - name: Only run once
         run: |
           echo "Event name: ${{ github.event_name }}"
