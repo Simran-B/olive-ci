@@ -36,6 +36,7 @@ jobs:
           github.event.pull_request.head.repo.full_name != github.repository
 
       - name: Test file content
+        continue-on-error: true
         run: |
           cat ./test/pr_test.txt
 
