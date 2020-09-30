@@ -1,0 +1,51 @@
+name: Pull Request
+
+on:
+  pull_request:
+  pull_request_target:
+
+jobs:
+  build:
+    name: Shared build job
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Event log
+        run: |
+          cat << 'EOF'
+            ${{ toJSON(github.event) }}
+          EOF
+
+      # Same repo
+      - uses: actions/checkout@v2
+        if: >-
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+
+      # Forked repo
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+        if: >-
+          github.event_name == 'pull_request_target' &&
+          github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: Test file content
+        run: |
+          cat ./test/pr_test.txt
+
+      - name: Only run once
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Is fork? ${{ github.event.pull_request.head.repo.full_name != github.repository }}"
+          echo "Secret: ${{ secrets.TEST_SECRET }}"
+          echo "Compare secret: ${{ secrets.TEST_SECRET == 'This should never be leaked!!!' }}"
+        if: >-
+          (
+            github.event_name == 'pull_request' &&
+            github.event.pull_request.head.repo.full_name == github.repository
+          ) || (
+            github.event_name == 'pull_request_target' &&
+            github.event.pull_request.head.repo.full_name != github.repository
+          )
