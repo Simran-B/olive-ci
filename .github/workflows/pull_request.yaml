@@ -31,6 +31,10 @@ jobs:
           github.event_name == 'pull_request_target' &&
           github.event.pull_request.head.repo.full_name != github.repository
 
+      - name: Workflow modified by PR
+        run: |
+          echo "This was added as part of a PR, so this should be in the same repo"
+
       - name: Test file content
         run: |
           cat ./test/pr_test.txt
