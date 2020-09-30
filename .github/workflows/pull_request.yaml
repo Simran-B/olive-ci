@@ -12,6 +12,10 @@ jobs:
 
       - name: Event log
         run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Is fork? ${{ github.event.pull_request.head.repo.full_name != github.repository }}"
+          echo "Secret: ${{ secrets.TEST_SECRET }}"
+          echo "Compare secret: ${{ secrets.TEST_SECRET == 'This should never be leaked!!!' }}"
           cat << 'EOF'
             ${{ toJSON(github.event) }}
           EOF
@@ -37,10 +41,7 @@ jobs:
 
       - name: Only run once
         run: |
-          echo "Event name: ${{ github.event_name }}"
-          echo "Is fork? ${{ github.event.pull_request.head.repo.full_name != github.repository }}"
-          echo "Secret: ${{ secrets.TEST_SECRET }}"
-          echo "Compare secret: ${{ secrets.TEST_SECRET == 'This should never be leaked!!!' }}"
+          echo "Either pull_request + this repo -OR- pull_request_target + forked repo"
         if: >-
           (
             github.event_name == 'pull_request' &&
