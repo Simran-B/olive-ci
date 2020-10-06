@@ -1,0 +1,24 @@
+name: Conditional runs-on
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docker-or-not:
+    name: Docker under Linux, native on macOS
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    container:
+      image: ${{ matrix.os == 'ubuntu-latest' && 'alpine:latest'}}
+    steps:
+      - name: OS
+        continue-on-error: true
+        run: |
+          uname -a
+          cat /etc/os-release
+          cat /proc/version
+          sw_vers
