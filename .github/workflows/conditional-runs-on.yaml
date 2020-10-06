@@ -15,7 +15,7 @@ jobs:
     container:
       # GitHub tries to execute Docker regardless of the image value it seems:
       # Error: File not found: 'docker'
-      image: ${{ matrix.os == 'ubuntu-latest' && 'alpine:latest' || null }}
+      image: ${{ matrix.os == 'ubuntu-latest' && 'alpine:latest' || '' }}
     steps:
       - name: Fake Docker
         run: |
@@ -29,8 +29,8 @@ jobs:
       - name: OS
         continue-on-error: true
         run: |
+          docker run --rm -it alpine:latest
           uname -a
           cat /etc/os-release
           cat /proc/version
           sw_vers
-          docker run --rm -it alpine:latest
