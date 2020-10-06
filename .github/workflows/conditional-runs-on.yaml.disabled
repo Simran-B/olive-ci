@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     container:
       # GitHub tries to execute Docker regardless of the image value it seems:
-      # Error: File not found: 'docker'
+      # Error: File not found: 'docker' (or Unexpected value '' if image is null or empty string)
       image: ${{ matrix.os == 'ubuntu-latest' && 'alpine:latest' || '' }}
     steps:
       - name: Fake Docker
