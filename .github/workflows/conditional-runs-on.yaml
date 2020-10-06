@@ -13,8 +13,19 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     container:
-      image: ${{ matrix.os == 'ubuntu-latest' && 'alpine:latest'}}
+      # GitHub tries to execute Docker regardless of the image value it seems:
+      # Error: File not found: 'docker'
+      image: ${{ matrix.os == 'ubuntu-latest' && 'alpine:latest' || null }}
     steps:
+      - name: Fake Docker
+        run: |
+          cat << 'EOF' > docker
+          #!/bin/bash
+          echo "Caught Docker invocation:"
+          echo "docker $@"
+          EOF
+          chmod +x ./docker
+          echo "$(pwd)" >> $GITHUB_PATH
       - name: OS
         continue-on-error: true
         run: |
@@ -22,3 +33,4 @@ jobs:
           cat /etc/os-release
           cat /proc/version
           sw_vers
+          docker run --rm -it alpine:latest
