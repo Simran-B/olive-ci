@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         build: [0, 1, 2]
-    steps:
+    steps: []
     outputs:
       build: ${{ matrix.build }}
       event_name: ${{ github.event_name }}
