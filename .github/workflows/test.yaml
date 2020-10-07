@@ -17,7 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cause: [automatic]
+        build: ${{ github.event_name != 'workflow_dispatch' && fromJSON('[1, 2]') || fromJSON('[0]') }}
+        include:
+          - build: 0
+            cause: ${{ github.event.inputs.trigger }}
+          - build: 1
+            cause: automatic
+          - build: 2
+            cause: automatic
     steps:
       - name: Manual inputs
         env:
@@ -25,25 +32,25 @@ jobs:
           PREFIX: '# 1'
         run: |
           echo "trigger: ${{ github.event.inputs.trigger }}"
-          echo "cause: ${{ matrix.cause }}"
+          echo "build: ${{ matrix.build }}, cause: ${{ matrix.cause }}"
           echo "OR: ${{ github.event.inputs.trigger || matrix.cause }}"
           echo "OR: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.trigger || matrix.cause }}"
           echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }} / ${{ ' ' || 'space?' }}"
           echo "fake ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }} / ${{ 0 == 0 && false || 'second' }}"
           echo "startsWith: ${{ startsWith(format('# {0}', env.VERSION), env.PREFIX) }}"
           echo "cast to string:"
-          cat <<EOF
+          cat << "EOF"
             ${{ toJSON('quoted?') }}
           EOF
-          cat <<EOF
+          cat << "EOF"
             ${{ toJSON('foo' == 'foo') }}
           EOF
-          cat <<EOF
+          cat << "EOF"
             ${{ toJSON(format('foo' == 'foo')) }}
           EOF
           echo
           echo "github context:"
-          cat <<EOF
+          cat << "EOF"
             ${{ toJSON(github) }}
           EOF
       - name: Only if manually triggered
