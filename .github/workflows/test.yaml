@@ -27,6 +27,7 @@ jobs:
             cause: automatic
     steps:
       - name: Skip unwanted matrix builds
+        run: echo ${{ github.event_name }}, build ${{ matrix.build }}
         if: >-
           (github.event_name == 'workflow_dispatch' && matrix.build == 0) ||
           (github.event_name != 'workflow_dispatch' && matrix.build != 0)
