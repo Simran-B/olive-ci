@@ -17,14 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [1]
+        build: [1, 2]
         include:
-          - build: ${{ github.event_name != 'workflow_dispatch' && 1 || 0}}
+          - build: 0
             cause: ${{ github.event.inputs.trigger }}
-          - build: ${{ github.event_name != 'workflow_dispatch' && 1 || 0}}
+          - build: 1
             cause: automatic
-          - build: ${{ github.event_name != 'workflow_dispatch' && 2 || 0}}
+          - build: 2
             cause: automatic
+    if: >-
+      (github.event_name == 'workflow_dispatch' && matrix.build == 0) ||
+      (github.event_name != 'workflow_dispatch' && matrix.build != 0)
     steps:
       - name: Manual inputs
         env:
