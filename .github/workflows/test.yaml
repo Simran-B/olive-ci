@@ -27,6 +27,7 @@ jobs:
             cause: automatic
     steps:
       - name: Fail unwanted matrix builds on purpose
+        continue-on-error: true
         run: |
           exit ${{ fromJSON('[1, 0]')[(github.event_name == 'workflow_dispatch' && matrix.build == 0) || (github.event_name != 'workflow_dispatch' && matrix.build != 0)] }}
       - name: Manual inputs
