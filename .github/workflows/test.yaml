@@ -18,7 +18,9 @@ jobs:
     strategy:
       matrix:
         build: [0, 1, 2]
-    steps: []
+    steps:
+      - name: Dummy step
+        run: echo "${{ github.event_name }}, ${{ matrix.build }}"
     outputs:
       build: ${{ matrix.build }}
       event_name: ${{ github.event_name }}
