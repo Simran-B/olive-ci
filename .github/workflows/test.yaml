@@ -17,8 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [1]
-        include: ${{ github.event_name == 'workflow_dispatch' && fromJSON('[ {"build": 1, "cause": "manual"} ]') || fromJSON('[ {"build": 1, "cause": "automatic"}, {"build": 2, "cause": "automatic"} ]') }}
+        build: [1, 2]
+        include:
+          - build: ${{ github.event_name != 'workflow_dispatch' && 1 || 0}}
+            cause: ${{ github.event.inputs.trigger }}
+          - build: 1
+            cause: automatic
+          - build: 2
+            cause: automatic
     steps:
       - name: Manual inputs
         env:
