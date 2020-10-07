@@ -26,10 +26,10 @@ jobs:
           - build: 2
             cause: automatic
     steps:
-      - name: Fail unwanted matrix builds on purpose
-        continue-on-error: true
-        run: |
-          exit ${{ fromJSON('[1, 0]')[(github.event_name == 'workflow_dispatch' && matrix.build == 0) || (github.event_name != 'workflow_dispatch' && matrix.build != 0)] }}
+      - name: Skip unwanted matrix builds
+        if: >-
+          (github.event_name == 'workflow_dispatch' && matrix.build == 0) ||
+          (github.event_name != 'workflow_dispatch' && matrix.build != 0)
       - name: Manual inputs
         env:
           VERSION: '1.2.3'
