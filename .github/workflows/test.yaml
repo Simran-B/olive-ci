@@ -58,7 +58,7 @@ jobs:
           cat << "EOF"
             ${{ toJSON(github) }}
           EOF
-        if: !cancelled() || !failure()
+        if: cancelled() == false && failure() == false
       - name: Only if manually triggered
         run: |
           echo "This workflow run was triggered manually"
