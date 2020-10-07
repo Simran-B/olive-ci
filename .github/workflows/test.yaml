@@ -12,12 +12,22 @@ on:
         default: manual
 
 jobs:
-  build:
-    name: Test Workflow
+  pre-build:
+    name: Init matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [1, 2]
+        build: [0, 1, 2]
+    outputs:
+      build: ${{ matrix.build }}
+      event_name: ${{ github.event_name }}
+  build:
+    name: Test Workflow
+    runs-on: ubuntu-latest
+    needs: [pre-build]
+    strategy:
+      matrix:
+        build: [0, 1, 2]
         include:
           - build: 0
             cause: ${{ github.event.inputs.trigger }}
@@ -26,8 +36,8 @@ jobs:
           - build: 2
             cause: automatic
     if: >-
-      (github.event_name == 'workflow_dispatch' && ${{ matrix.build == 0 }}) ||
-      (github.event_name != 'workflow_dispatch' && ${{ matrix.build != 0 }})
+      (needs.pre-build.event_name == 'workflow_dispatch' && needs.pre-build.build == 0) ||
+      (needs.pre-build.event_name != 'workflow_dispatch' && needs.pre-build.build != 0)
     steps:
       - name: Manual inputs
         env:
