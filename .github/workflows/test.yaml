@@ -16,7 +16,7 @@ jobs:
     name: Create Matrix
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }}
     steps:
       - id: set-matrix-manual
         if: github.event_name == 'workflow_dispatch'
