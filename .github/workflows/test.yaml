@@ -12,25 +12,49 @@ on:
         default: manual
 
 jobs:
+  create-matrix:
+    name: Create Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }}
+    steps:
+      - name: Set Matrix (manual)
+        id: set-matrix-manual
+        env:
+          MATRIX_JSON: '
+            { "include": [{
+              "build": 1,
+              "cause": ${{ toJSON(github.event.inputs.trigger) }}
+            }]}'
+        run: echo "::set-output name=matrix::$MATRIX_JSON"
+        if: github.event_name == 'workflow_dispatch'
+      - name: Set Matrix (automatic)
+        id: set-matrix-automatic
+        env:
+          MATRIX_JSON: '
+            { "include": [{
+              "build": 1,
+              "cause": "automatic"
+            },{
+              "build": 2,
+              "cause": "automatic"
+            }]}'
+        run: echo "::set-output name=matrix::$MATRIX_JSON"
+        if: github.event_name != 'workflow_dispatch'
   build:
     name: Test Workflow
+    needs: create-matrix
     runs-on: ubuntu-latest
-    env:
-      MATRIX_AUTOMATIC: '
-        { "include": [{
-          "build": 1,
-          "cause": "automatic"
-        },{
-          "build": 2,
-          "cause": "automatic"
-        }]}'
-      MATRIX_MANUAL: '
-        { "include": [{
-          "build": 1,
-          "cause": ${{ toJSON(github.event.inputs.trigger) }}
-        }]}'
     strategy:
-      matrix: ${{ fromJSON(github.event_name != 'workflow_dispatch' && env.MATRIX_AUTOMATIC || env.MATRIX_MANUAL) }}
+      matrix: ${{ fromJSON(needs.create-matrix.outputs.matrix) }}
+      # build: [0, 1, 2]
+      # include:
+      #   - build: 0
+      #     cause: ${{ github.event.inputs.trigger }}
+      #   - build: 1
+      #     cause: automatic
+      #   - build: 2
+      #     cause: automatic
     steps:
       - name: Inputs
         env:
