@@ -50,6 +50,10 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.create-matrix.outputs.matrix) }}
     steps:
+      - name: Windows cmd code page
+        shell: cmd
+        run: chcp
+        if: startsWith(matrix.os, 'windows-')
       - name: Set multi-line env var (Bash)
         run: |
           echo 'JSON_RESPONSE<<EOF' >> $GITHUB_ENV
@@ -95,6 +99,8 @@ jobs:
           echo "pseudo ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }} / ${{ 0 == 0 && false || 'second' }}"
           echo "startsWith: ${{ startsWith(format('# {0}', env.VERSION), env.PREFIX) }}"
           echo "using inline object: ${{ fromJSON('{"cow": "moo!", "duck": "nak nak!"}')[env.ANIMAL] }}"
+      - name: cat EOF
+        run: |
           echo "cast to string:"
           cat<<'EOF'
             ${{ toJSON('quoted?') }}
@@ -110,6 +116,15 @@ jobs:
           cat<<'EOF'
             ${{ toJSON(github) }}
           EOF
+        if: startsWith(matrix.os, 'ubuntu-')
+      - name: pwsh heredoc
+        run: |
+          echo @"
+            DONT STOP HERE "@
+            ---
+            ${{ toJSON(github) }}
+          "@
+        if: startsWith(matrix.os, 'windows-')
       - name: Only if manually triggered
         run: |
           echo "This workflow run was triggered manually"
