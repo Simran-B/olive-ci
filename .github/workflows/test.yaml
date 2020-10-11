@@ -18,6 +18,14 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }}
     steps:
+      - name: Set multi-line env var
+        run: |
+          echo 'JSON_RESPONSE<<EOF' >> $GITHUB_ENV
+          curl https://httpbin.org/json >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          echo '---'
+          echo "GITHUB_ENV = $GITHUB_ENV"
+          cat $GITHUB_ENV
       - name: Set Matrix (manual)
         id: set-matrix-manual
         env:
