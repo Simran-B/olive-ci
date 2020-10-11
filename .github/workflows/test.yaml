@@ -21,11 +21,20 @@ jobs:
       - name: Set multi-line env var
         run: |
           echo 'JSON_RESPONSE<<EOF' >> $GITHUB_ENV
-          curl https://httpbin.org/json >> $GITHUB_ENV
+          echo '{"foo": "bar",' >> $GITHUB_ENV
+          echo ' "baz": "`date`",' >> $GITHUB_ENV
+          echo '}' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
           echo '---'
           echo "GITHUB_ENV = $GITHUB_ENV"
           cat $GITHUB_ENV
+      - name: Check env var
+        run: |
+          echo "$JSON_RESPONSE"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJSON(job) }}
+        run: echo "$JOB_CONTEXT"
       - name: Set Matrix (manual)
         id: set-matrix-manual
         env:
@@ -77,6 +86,7 @@ jobs:
           echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }} / ${{ ' ' || 'space?' }}"
           echo "pseudo ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }} / ${{ 0 == 0 && false || 'second' }}"
           echo "startsWith: ${{ startsWith(format('# {0}', env.VERSION), env.PREFIX) }}"
+          echo "$"
           echo "cast to string:"
           cat<<'EOF'
             ${{ toJSON('quoted?') }}
