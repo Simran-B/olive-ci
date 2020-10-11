@@ -18,23 +18,6 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }}
     steps:
-      - name: Set multi-line env var
-        run: |
-          echo 'JSON_RESPONSE<<EOF' >> $GITHUB_ENV
-          echo '{"foo": "bar",' >> $GITHUB_ENV
-          echo ' "baz": "`date`",' >> $GITHUB_ENV
-          echo '}' >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-          echo '---'
-          echo "GITHUB_ENV = $GITHUB_ENV"
-          cat $GITHUB_ENV
-      - name: Check env var
-        run: |
-          echo "$JSON_RESPONSE"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJSON(job) }}
-        run: echo "$JOB_CONTEXT"
       - name: Set Matrix (manual)
         id: set-matrix-manual
         env:
@@ -51,32 +34,57 @@ jobs:
           MATRIX_JSON: '
             { "include": [{
               "build": 1,
-              "cause": "automatic"
+              "cause": "automatic",
+              "os": "ubuntu-latest"
             },{
               "build": 2,
-              "cause": "automatic"
+              "cause": "automatic",
+              "os": "windows-latest"
             }]}'
         run: echo "::set-output name=matrix::$MATRIX_JSON"
         if: github.event_name != 'workflow_dispatch'
   build:
     name: Test Workflow
     needs: create-matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix: ${{ fromJSON(needs.create-matrix.outputs.matrix) }}
-      # build: [0, 1, 2]
-      # include:
-      #   - build: 0
-      #     cause: ${{ github.event.inputs.trigger }}
-      #   - build: 1
-      #     cause: automatic
-      #   - build: 2
-      #     cause: automatic
     steps:
+      - name: Set multi-line env var (Bash)
+        run: |
+          echo 'JSON_RESPONSE<<EOF' >> $GITHUB_ENV
+          echo '{"foo": "bar",' >> $GITHUB_ENV
+          echo ' "baz": "`date`",' >> $GITHUB_ENV
+          echo '}' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          echo '---'
+          echo "GITHUB_ENV = $GITHUB_ENV"
+          cat $GITHUB_ENV
+        if: startsWith(matrix.os, 'ubuntu-')
+      - name: Check env var
+        run: |
+          echo "$JSON_RESPONSE"
+        if: startsWith(matrix.os, 'ubuntu-')
+      - name: Set multi-line env var (PowerShell)
+        run: |
+          echo 'JSON_RESPONSE<<EOF' | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo '{"foo": "bar",' | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo ' "baz": "`date`",' | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo '}' | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo 'EOF' | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo '---'
+          echo "GITHUB_ENV = $Env:GITHUB_ENV"
+          cat $Env:GITHUB_ENV
+        if: startsWith(matrix.os, 'windows-')
+      - name: Check env var
+        run: |
+          echo "$Env:JSON_RESPONSE"
+        if: startsWith(matrix.os, 'windows-')
       - name: Inputs
         env:
           VERSION: '1.2.3'
           PREFIX: '# 1'
+          ANIMAL: duck
         run: |
           echo "trigger = ${{ github.event.inputs.trigger }} (workflow_dispatch only)"
           echo "build = ${{ matrix.build }}"
@@ -86,7 +94,7 @@ jobs:
           echo "OR falsey: ${{ 0 || 'truthy' }} / ${{ '' || 'truthy' }} / ${{ false || 'truthy' }} / ${{ null || 'truthy' }} / ${{ ' ' || 'space?' }}"
           echo "pseudo ternary: ${{ 0 == 0 && 'first' || 'second' }} / ${{ 0 != 0 && 'first' || 'second' }} / ${{ 0 == 0 && false || 'second' }}"
           echo "startsWith: ${{ startsWith(format('# {0}', env.VERSION), env.PREFIX) }}"
-          echo "$"
+          echo "using inline object: ${{ fromJSON('{"cow": "moo!", "duck": "nak nak!"}')[env.ANIMAL] }}"
           echo "cast to string:"
           cat<<'EOF'
             ${{ toJSON('quoted?') }}
