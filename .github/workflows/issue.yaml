@@ -8,6 +8,26 @@ jobs:
     name: Issue commented
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v3
+        id: get-pr
+        with:
+          script: |
+            // TODO: throw error if issue is not a pull request
+            //const { data: pr } = await github.pulls.get({
+            //const pr = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            })
+            console.log(pr)
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
+      - name: Git info
+        run: |
+          git log -1
+          git remote -v
       - name: Default env vars
         run: |
           echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
