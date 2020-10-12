@@ -4,8 +4,9 @@ on:
   issue_comment:
 
 jobs:
-  issue-commented:
-    name: Issue commented
+  pr-commented:
+    name: PR commented
+    if: github.event.issue.pull_request
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v3
