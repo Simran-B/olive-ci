@@ -20,11 +20,16 @@ jobs:
               pull_number: context.issue.number
             })
             console.log(pr)
+      - name: Print PR info
+        env:
+          PR_INFO: ${{ steps.get-pr.outputs.result }}
+        run: |
+          echo "$PR_INFO"
       - uses: actions/checkout@v2
         with:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
-      - name: Git info
+      - name: Print Git info
         run: |
           git log -1
           git remote -v
