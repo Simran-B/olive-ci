@@ -27,7 +27,7 @@ jobs:
             }
       - name: Print PR info
         env:
-          PR_INFO: ${{ fromJSON(steps.get-pr.outputs.result) }}
+          PR_INFO: ${{ toJSON(fromJSON(steps.get-pr.outputs.result)) }}
         run: |
           echo "$PR_INFO"
       - uses: actions/checkout@v2
