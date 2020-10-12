@@ -12,6 +12,7 @@ jobs:
       - uses: actions/github-script@v3
         id: get-pr
         with:
+          result-encoding: string
           script: |
             const request = {
               owner: context.repo.owner,
