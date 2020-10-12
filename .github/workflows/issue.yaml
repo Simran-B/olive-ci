@@ -12,14 +12,21 @@ jobs:
         id: get-pr
         with:
           script: |
-            // TODO: throw error if issue is not a pull request
-            //const { data: pr } = await github.pulls.get({
-            const pr = await github.pulls.get({
+            const request = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
-            })
-            console.log(pr)
+            }
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            try {
+              const result = await github.pulls.get()
+            } catch(err) {
+              //import { RequestError } from "@octokit/request-error"
+              //if (err instanceof RequestError) throw err.message
+              core.setFailed(`Request failed with error ${err}`)
+              return
+            }
+            return result.data
       - name: Print PR info
         env:
           PR_INFO: ${{ steps.get-pr.outputs.result }}
