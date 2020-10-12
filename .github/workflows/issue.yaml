@@ -21,11 +21,8 @@ jobs:
             try {
               const result = await github.pulls.get(request)
             } catch (err) {
-              // TODO: How to test for specific errors here?
-              const RequestError = require('@octokit/request-error')
-              if (err instanceof RequestError) throw err.message
-              //core.setFailed(`Request failed with error ${err}`)
-              //return
+              core.setFailed(`Request failed with error ${err}`)
+              return
             }
             return result.data
       - name: Print PR info
