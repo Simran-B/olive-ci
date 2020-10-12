@@ -9,17 +9,11 @@ jobs:
     needs: pr-commented
     runs-on: ubuntu-latest
     steps:
-      - name: Get env from other job
+      - name: Get/set env from other job
+        env:
+          SHARED_ENV: ${{ needs.pr-commented.outputs.gh-env }}
         run: |
-          echo "$GITHUB_ENV"
-          echo '----------'
-          cat "$GITHUB_ENV"
-          echo '----------'
-          echo '${{ needs.pr-commented.outputs.gh-env }}'
-          echo '----------'
-          cat '${{ needs.pr-commented.outputs.gh-env }}'
-          echo '----------'
-          cat '${{ needs.pr-commented.outputs.gh-env }}' >> $GITHUB_ENV
+          echo "$SHARED_ENV" >> $GITHUB_ENV
       - name: Copied env vars
         run: |
           echo "$ENV_VAR"
