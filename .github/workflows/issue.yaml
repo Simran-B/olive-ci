@@ -13,6 +13,8 @@ jobs:
         run: |
           echo "$GITHUB_ENV"
           echo '----------'
+          cat "$GITHUB_ENV"
+          echo '----------'
           echo '${{ needs.pr-commented.outputs.gh-env }}'
           echo '----------'
           cat '${{ needs.pr-commented.outputs.gh-env }}'
@@ -26,13 +28,21 @@ jobs:
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
     outputs:
-      gh-env: ${{ steps.shared-env.outputs.gh-env }}
+      gh-env: ${{ steps.set-env.outputs.gh-env }}
     steps:
-      - name: Set job-wide env var
+      - name: Set shared env var
         id: shared-env
         run: |
-          echo 'ENV_VAR=foo bar' >> $GITHUB_ENV
-          echo "::set-output name=gh-env::$GITHUB_ENV"
+          echo 'ENV_VAR<<EOF' >> $GITHUB_ENV
+          echo 'foo' >> $GITHUB_ENV
+          echo 'bar' >> $GITHUB_ENV
+          echo 'do not eval `this`' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      - name: Set env as output
+        id: set-env
+        run: |
+          echo "$ENV_VAR"
+          echo "::set-output name=gh-env::$(cat $GITHUB_ENV)"
       - uses: actions/github-script@v3
         id: get-pr
         with:
