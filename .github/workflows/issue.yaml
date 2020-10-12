@@ -14,7 +14,7 @@ jobs:
           script: |
             // TODO: throw error if issue is not a pull request
             //const { data: pr } = await github.pulls.get({
-            //const pr = await github.pulls.get({
+            const pr = await github.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
