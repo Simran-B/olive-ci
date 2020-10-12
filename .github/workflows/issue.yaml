@@ -4,11 +4,33 @@ on:
   issue_comment:
 
 jobs:
+  post:
+    name: Post job
+    needs: pr-commented
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get env from other job
+        run: |
+          echo $GITHUB_ENV
+          echo '----------'
+          echo '${{ needs.pr-commented.outputs.GITHUB_ENV }}'
+          echo '----------'
+          cat '${{ needs.pr-commented.outputs.GITHUB_ENV }}'
+          echo '----------'
+          cat '${{ needs.pr-commented.outputs.GITHUB_ENV }}' >> $GITHUB_ENV
+      - name: Copied env var
+        run: |
+          echo "$ENV_VAR"
   pr-commented:
     name: PR commented
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
+    outputs:
+      GITHUB_ENV: ${{ env.GITHUB_ENV }}
     steps:
+      - name: Set job-wide env var
+        run: |
+          echo 'ENV_VAR=foo bar' >> $GITHUB_ENV
       - uses: actions/github-script@v3
         id: get-pr
         with:
