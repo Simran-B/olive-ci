@@ -17,7 +17,8 @@ jobs:
           echo "$SHARED_ENV" >> $GITHUB_ENV
       - name: Copied env vars
         run: |
-          echo "$ENV_VAR"
+          echo "ENV_VAR_1 = $ENV_VAR_1"
+          echo "ENV_VAR_2 = $ENV_VAR_2"
   pr-commented:
     name: PR commented
     if: github.event.issue.pull_request
@@ -28,15 +29,17 @@ jobs:
       - name: Set shared env var
         id: set-github-env
         run: |
-          echo 'ENV_VAR<<EOF' >> $GITHUB_ENV
+          echo 'ENV_VAR_1<<EOF' >> $GITHUB_ENV
           echo 'foo' >> $GITHUB_ENV
           echo 'bar' >> $GITHUB_ENV
           echo 'do not eval `this`' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+          echo 'ENV_VAR_2=single line' >> $GITHUB_ENV
       - name: Set env as output
         id: set-env-output
         run: |
-          echo "ENV_VAR = $ENV_VAR"
+          echo "ENV_VAR_1 = $ENV_VAR_1"
+          echo "ENV_VAR_2 = $ENV_VAR_2"
           GH_ENV=$(cat "$GITHUB_ENV")
           echo "::set-output name=gh_env::$GH_ENV"
       - uses: actions/github-script@v3
