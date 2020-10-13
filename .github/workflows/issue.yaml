@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "ENV_VAR_1 = $ENV_VAR_1"
           echo "ENV_VAR_2 = $ENV_VAR_2"
-          echo "STATE_SAVED_ENV = STATE_SAVED_ENV"
+          echo "STATE_SAVED_ENV = $STATE_SAVED_ENV"
           echo "env.STATE_SAVED_ENV = ${{ env.STATE_SAVED_ENV }}"
           echo '::group::File Properties'
           echo "Env file: $GITHUB_ENV"
