@@ -53,7 +53,9 @@ jobs:
           echo "Content (cat): $(cat $GITHUB_ENV)"
           cat $GITHUB_ENV
           echo "Content (tail): $(tail $GITHUB_ENV)"
-          GH_ENV=$(cat $GITHUB_ENV)
+          cat $GITHUB_ENV
+          echo "Content (redirect): $(<$GITHUB_ENV)"
+          GH_ENV=$(<$GITHUB_ENV)
           echo "GH_ENV = $GH_ENV"
           echo "::set-output name=gh_env::$GH_ENV"
       - name: Check output
