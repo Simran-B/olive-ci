@@ -1,0 +1,13 @@
+name: Grouping
+
+on: push
+
+jobs:
+  group:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Group log lines
+        run: |
+          echo "::group::My title"
+          echo "Inside group"
+          echo "::endgroup::"
