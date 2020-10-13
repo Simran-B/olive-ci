@@ -50,7 +50,9 @@ jobs:
           if [[ -h $GITHUB_ENV ]]; then echo 'is symbolic link'; fi
           if [[ -p $GITHUB_ENV ]]; then echo 'is named pipe'; fi
           if [[ -S $GITHUB_ENV ]]; then echo 'is socket'; fi
-          echo "Content: $(cat $GITHUB_ENV)"
+          echo "Content (cat): $(cat $GITHUB_ENV)"
+          cat $GITHUB_ENV
+          echo "Content (tail): $(tail $GITHUB_ENV)"
           GH_ENV=$(cat $GITHUB_ENV)
           echo "GH_ENV = $GH_ENV"
           echo "::set-output name=gh_env::$GH_ENV"
