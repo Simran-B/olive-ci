@@ -35,11 +35,15 @@ jobs:
           echo 'do not eval `this`' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
           echo 'ENV_VAR_2=single line' >> $GITHUB_ENV
+          echo "::save-state name=SAVED_ENV::apparently only available in actions"
       - name: Set env as output
         id: set-env-output
         run: |
           echo "ENV_VAR_1 = $ENV_VAR_1"
           echo "ENV_VAR_2 = $ENV_VAR_2"
+          echo "STATE_SAVED_ENV = STATE_SAVED_ENV"
+          echo "env.STATE_SAVED_ENV = ${{ env.STATE_SAVED_ENV }}"
+          echo '::group::File Properties'
           echo "Env file: $GITHUB_ENV"
           ls -la $GITHUB_ENV
           if [[ -e $GITHUB_ENV ]]; then echo 'exists'; fi
@@ -50,6 +54,7 @@ jobs:
           if [[ -h $GITHUB_ENV ]]; then echo 'is symbolic link'; fi
           if [[ -p $GITHUB_ENV ]]; then echo 'is named pipe'; fi
           if [[ -S $GITHUB_ENV ]]; then echo 'is socket'; fi
+          echo '::endgroup::'
           echo "Content (cat): $(cat $GITHUB_ENV)"
           cat $GITHUB_ENV
           echo "Content (tail): $(tail $GITHUB_ENV)"
