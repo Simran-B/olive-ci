@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get/set env from other job
-        env:
-          SHARED_ENV: ${{ needs.pr-commented.outputs.gh_env }}
+        env: ${{ fromJSON(needs.pr-commented.outputs.gh_env) }}
         run: |
           echo "$SHARED_ENV" >> $GITHUB_ENV
       - name: Copied env vars
@@ -22,7 +21,8 @@ jobs:
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
     outputs:
-      gh_env: ${{ steps.set-env.outputs.gh_env }}
+      #gh_env: ${{ steps.set-env.outputs.gh_env }}
+      gh_env: ${{ toJSON(env) }}
     steps:
       - name: Set shared env var
         id: shared-env
