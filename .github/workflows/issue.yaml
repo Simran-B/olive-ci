@@ -41,8 +41,17 @@ jobs:
           echo "ENV_VAR_1 = $ENV_VAR_1"
           echo "ENV_VAR_2 = $ENV_VAR_2"
           echo "Env file: $GITHUB_ENV"
+          ls -la $GITHUB_ENV
+          if [[ -e $GITHUB_ENV ]]; then echo 'exists'; fi
+          if [[ -r $GITHUB_ENV ]]; then echo 'readable'; fi
+          if [[ -w $GITHUB_ENV ]]; then echo 'writable'; fi
+          if [[ -s $GITHUB_ENV ]]; then echo 'size greater than zero'; fi
+          if [[ -f $GITHUB_ENV ]]; then echo 'is regular file'; fi
+          if [[ -h $GITHUB_ENV ]]; then echo 'is symbolic link'; fi
+          if [[ -p $GITHUB_ENV ]]; then echo 'is named pipe'; fi
+          if [[ -S $GITHUB_ENV ]]; then echo 'is socket'; fi
           echo "Content: $(cat $GITHUB_ENV)"
-          GH_ENV="$(cat $GITHUB_ENV)"
+          GH_ENV=$(cat $GITHUB_ENV)
           echo "GH_ENV = $GH_ENV"
           echo "::set-output name=gh_env::$GH_ENV"
       - name: Check output
