@@ -41,7 +41,11 @@ jobs:
           echo "ENV_VAR_1 = $ENV_VAR_1"
           echo "ENV_VAR_2 = $ENV_VAR_2"
           GH_ENV=$(cat "$GITHUB_ENV")
+          echo "GH_ENV = $GH_ENV"
           echo "::set-output name=gh_env::$GH_ENV"
+      - name: Check output
+        run: |
+          echo 'gh_env = ${{ steps.set-env-output.outputs.gh_env }}'
       - uses: actions/github-script@v3
         id: get-pr
         with:
