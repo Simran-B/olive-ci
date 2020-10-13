@@ -4,21 +4,6 @@ on:
   issue_comment:
 
 jobs:
-  post:
-    name: Post job
-    needs: pr-commented
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get/set env from other job
-        env:
-          SHARED_ENV: ${{ needs.pr-commented.outputs.gh_env }}
-        run: |
-          echo "SHARED_ENV = $SHARED_ENV"
-          echo "$SHARED_ENV" >> $GITHUB_ENV
-      - name: Copied env vars
-        run: |
-          echo "ENV_VAR_1 = $ENV_VAR_1"
-          echo "ENV_VAR_2 = $ENV_VAR_2"
   pr-commented:
     name: PR commented
     if: github.event.issue.pull_request
@@ -39,6 +24,8 @@ jobs:
       - name: Set env as output
         id: set-env-output
         run: |
+          echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
+          echo "env.GITHUB_WORKSPACE = ${{ env.GITHUB_WORKSPACE }}"
           echo "ENV_VAR_1 = $ENV_VAR_1"
           echo "ENV_VAR_2 = $ENV_VAR_2"
           echo "STATE_SAVED_ENV = $STATE_SAVED_ENV"
@@ -119,3 +106,18 @@ jobs:
           cat<<EOF
             ${{ toJSON(github.event) }}
           EOF
+  post:
+    name: Post job
+    needs: pr-commented
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get/set env from other job
+        env:
+          SHARED_ENV: ${{ needs.pr-commented.outputs.gh_env }}
+        run: |
+          echo "SHARED_ENV = $SHARED_ENV"
+          echo "$SHARED_ENV" >> $GITHUB_ENV
+      - name: Copied env vars
+        run: |
+          echo "ENV_VAR_1 = $ENV_VAR_1"
+          echo "ENV_VAR_2 = $ENV_VAR_2"
