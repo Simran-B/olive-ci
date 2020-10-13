@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get/set env from other job
-        env: ${{ fromJSON(needs.pr-commented.outputs.gh_env) }}
+        env:
+          SHARED_ENV: ${{ needs.pr-commented.outputs.gh_env }}
         run: |
+          echo "SHARED_ENV = $SHARED_ENV"
           echo "$SHARED_ENV" >> $GITHUB_ENV
       - name: Copied env vars
         run: |
@@ -21,11 +23,10 @@ jobs:
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
     outputs:
-      #gh_env: ${{ steps.set-env.outputs.gh_env }}
-      gh_env: ${{ toJSON(env) }}
+      gh_env: ${{ steps.set-env-output.outputs.gh_env }}
     steps:
       - name: Set shared env var
-        id: shared-env
+        id: set-github-env
         run: |
           echo 'ENV_VAR<<EOF' >> $GITHUB_ENV
           echo 'foo' >> $GITHUB_ENV
@@ -33,10 +34,11 @@ jobs:
           echo 'do not eval `this`' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       - name: Set env as output
-        id: set-env
+        id: set-env-output
         run: |
-          echo "$ENV_VAR"
-          echo "::set-output name=gh_env::$(cat $GITHUB_ENV)"
+          echo "ENV_VAR = $ENV_VAR"
+          GH_ENV=$(cat "$GITHUB_ENV")
+          echo "::set-output name=gh_env::$GH_ENV"
       - uses: actions/github-script@v3
         id: get-pr
         with:
