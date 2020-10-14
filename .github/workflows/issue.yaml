@@ -60,9 +60,9 @@ jobs:
           echo "env.ENV_KEY = ${{ env.ENV_KEY }}"
           echo "\$GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
           echo "env.GITHUB_WORKSPACE = ${{ env.GITHUB_WORKSPACE }}"
-          export EXPORT_VAR=limited to this step
+          export EXPORT_VAR="limited to this step"
           echo "\$EXPORT_VAR = $EXPORT_VAR"
-          echo "env.EXPORT_VAR = ${{ env.EXPORT_VAR }}
+          echo "env.EXPORT_VAR = ${{ env.EXPORT_VAR }}"
       - name: Check output
         run: |
           echo 'gh_env = ${{ steps.set-env-output.outputs.gh_env }}'
@@ -107,6 +107,8 @@ jobs:
           echo "\$EXPORT_VAR = $EXPORT_VAR"
           echo "env.EXPORT_VAR = ${{ env.EXPORT_VAR }}"
           echo "::echo::on"
+          echo "::add-mask::mypassword"
+          echo "Password: mypassword"
           echo "\$GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
           echo "\$GITHUB_SHA = $GITHUB_SHA"
           echo "\$GITHUB_REF = $GITHUB_REF"
