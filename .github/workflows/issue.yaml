@@ -3,6 +3,9 @@ name: Issue Test
 on:
   issue_comment:
 
+env:
+  ENV_KEY: workflow level
+
 jobs:
   pr-commented:
     name: PR commented
@@ -10,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       gh_env: ${{ steps.set-env-output.outputs.gh_env }}
+    env:
+      ENV_KEY: job level
     steps:
       - name: Set shared env var
         id: set-github-env
@@ -48,9 +53,12 @@ jobs:
           GH_ENV=$(<$GITHUB_ENV)
           echo "GH_ENV = $GH_ENV"
           echo "::set-output name=gh_env::$GH_ENV"
-      - name: env.GITHUB_WORKSPACE only available in with, name and if keys = ${{ env.GITHUB_WORKSPACE}}
+      - name: env.GITHUB_WORKSPACE=${{ env.GITHUB_WORKSPACE}}, env.ENV_KEY=${{ env.ENV_KEY }}
         run: |
-          echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
+          echo "env context only available in with, name and if keys."
+          echo "\$ENV_KEY = $ENV_KEY"
+          echo "env.ENV_KEY = ${{ env.ENV_KEY }}"
+          echo "\$GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
           echo "env.GITHUB_WORKSPACE = ${{ env.GITHUB_WORKSPACE }}"
       - name: Check output
         run: |
@@ -87,12 +95,16 @@ jobs:
           git log -1
           git remote -v
       - name: Default env vars
+        env:
+          ENV_KEY: step level
         run: |
-          echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
-          echo "GITHUB_SHA = $GITHUB_SHA"
-          echo "GITHUB_REF = $GITHUB_REF"
-          echo "GITHUB_HEAD_REF = $GITHUB_HEAD_REF"
-          echo "GITHUB_BASE_REF = $GITHUB_BASE_REF"
+          echo "\$ENV_KEY = $ENV_KEY"
+          echo "${{ env.ENV_KEY }}"
+          echo "\$GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
+          echo "\$GITHUB_SHA = $GITHUB_SHA"
+          echo "\$GITHUB_REF = $GITHUB_REF"
+          echo "\$GITHUB_HEAD_REF = $GITHUB_HEAD_REF"
+          echo "\$GITHUB_BASE_REF = $GITHUB_BASE_REF"
       - name: GitHub Event (env)
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
