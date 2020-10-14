@@ -109,7 +109,7 @@ jobs:
           localpw3="localpassword3"
           echo "::add-mask::$localpw1"
           echo "::add-mask::$(echo $localpw2)"
-          echo "::add-mask::$[localpw3]"
+          echo "::add-mask::$[$localpw3]"
           echo "Local passwords: localpassword1 localpassword2 localpassword3"
           echo "\$ENV_KEY = $ENV_KEY"
           echo "env.ENV_KEY = ${{ env.ENV_KEY }}"
