@@ -4,8 +4,15 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
+      - name: Before time change
+        run: (Get-Date).toString()
       - run: |
-          Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters -Name "Type"
-          Set-Date -Adjust (New-TimeSpan -Days 20)
-          [Threading.Thread]::Sleep($(New-TimeSpan -Minutes 20))
-          Get-Date
+          Write-Output (Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters).Type
+          Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters -Name Type -Value NoSync
+          Write-Output (Set-Date -Adjust (New-TimeSpan -Days 20))
+          #[Threading.Thread]::Sleep($(New-TimeSpan -Minutes 1))
+          Start-Sleep (New-TimeSpan -Minutes 1).TotalSeconds
+          Write-Output (Get-Date)
+          Write-Output (Set-Date -Adjust (New-TimeSpan -Days -20))
+      - name: After time change
+        run: (Get-Date).toString()
