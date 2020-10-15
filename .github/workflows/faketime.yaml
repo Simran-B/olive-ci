@@ -6,13 +6,14 @@ jobs:
     steps:
       - name: Before time change
         run: (Get-Date).toString()
-      - run: |
+      - name: Change time
+        run: |
           (Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters).Type
           Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters -Name Type -Value NoSync
           (Set-Date -Adjust (New-TimeSpan -Days 20)).toString()
-          [Threading.Thread]::Sleep($(New-TimeSpan -Minutes 1))
+          #[Threading.Thread]::Sleep($(New-TimeSpan -Minutes 1))
           #Start-Sleep $((New-TimeSpan -Minutes 1).TotalSeconds)
-          (Get-Date).toString()
+          Start-Sleep 60
           (Set-Date -Adjust (New-TimeSpan -Days -20)).toString()
       - name: After time change
         run: (Get-Date).toString()
