@@ -12,14 +12,17 @@ jobs:
           Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters -Name Type -Value NoSync
           (Set-Date -Adjust (New-TimeSpan -Days 20)).toString()
           #[Threading.Thread]::Sleep($(New-TimeSpan -Minutes 1))
-          (New-TimeSpan -Minutes 1).TotalSeconds | Start-Sleep
+          (New-TimeSpan -Seconds 5).TotalSeconds | Start-Sleep
           (Set-Date -Adjust (New-TimeSpan -Days -20)).toString()
       - name: After time change
         run: (Get-Date).toString()
   linux:
     runs-on: ubuntu-latest
     steps:
+      - name: actual time
+        run: date
       - name: faketime
         env:
           FAKETIME: +20 days
+          LD_PRELOAD: /usr/local/lib/faketime/libfaketime.so.1
         run: date
