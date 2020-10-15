@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          apt install libfaketime
+          sudo apt-get install libfaketime
           cat /etc/ld.so.preload
         continue-on-error: true
       - name: actual time
