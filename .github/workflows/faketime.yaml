@@ -11,8 +11,8 @@ jobs:
           Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters -Name Type -Value NoSync
           Write-Output (Set-Date -Adjust (New-TimeSpan -Days 20))
           #[Threading.Thread]::Sleep($(New-TimeSpan -Minutes 1))
-          Start-Sleep (New-TimeSpan -Minutes 1).TotalSeconds
-          Write-Output (Get-Date)
+          Start-Sleep $((New-TimeSpan -Minutes 1).TotalSeconds)
+          (Get-Date).toString()
           Write-Output (Set-Date -Adjust (New-TimeSpan -Days -20))
       - name: After time change
         run: (Get-Date).toString()
