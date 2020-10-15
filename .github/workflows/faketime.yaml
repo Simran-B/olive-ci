@@ -7,5 +7,5 @@ jobs:
       - run: |
           Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters -Name "Type"
           Set-Date -Adjust (New-TimeSpan -Days 20)
-          [Threading.Thread]::Sleep(New-TimeSpan -Minutes 20)
+          [Threading.Thread]::Sleep($(New-TimeSpan -Minutes 20))
           Get-Date
