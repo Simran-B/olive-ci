@@ -1,0 +1,9 @@
+name: Fake time
+on: push
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          Set-Date -Adjust (New-TimeSpan -Days 20)
+          Get-Date
