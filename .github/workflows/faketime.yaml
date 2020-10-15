@@ -3,6 +3,7 @@ on: push
 jobs:
   windows:
     runs-on: windows-latest
+    if: false
     steps:
       - name: Before time change
         run: (Get-Date).toString()
@@ -19,6 +20,9 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     steps:
+      - run: |
+          find / -name '*faketime*'
+          cat /etc/ld.so.preload
       - name: actual time
         run: date
       - name: faketime
