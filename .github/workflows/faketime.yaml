@@ -3,7 +3,6 @@ on: push
 jobs:
   windows:
     runs-on: windows-latest
-    if: 'false'
     steps:
       - name: Before time change
         run: (Get-Date).toString()
@@ -14,19 +13,17 @@ jobs:
           (Set-Date -Adjust (New-TimeSpan -Days 20)).toString()
           #[Threading.Thread]::Sleep($(New-TimeSpan -Minutes 1))
           (New-TimeSpan -Seconds 5).TotalSeconds | Start-Sleep
-          (Set-Date -Adjust (New-TimeSpan -Days -20)).toString()
+          #(Set-Date -Adjust (New-TimeSpan -Days -20)).toString()
       - name: After time change
         run: (Get-Date).toString()
   linux:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          sudo apt-get install libfaketime
-          find / -name '*faketime*' -type f 2>/dev/null
+      - run: sudo apt-get install libfaketime
       - name: actual time
         run: date
       - name: faketime
         env:
           FAKETIME: +20 days
-          LD_PRELOAD: /usr/local/lib/faketime/libfaketime.so.1
+          LD_PRELOAD: /usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
         run: date
