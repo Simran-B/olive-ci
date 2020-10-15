@@ -22,8 +22,7 @@ jobs:
     steps:
       - run: |
           sudo apt-get install libfaketime
-          cat /etc/ld.so.preload
-        continue-on-error: true
+          find / -name '*faketime*' -type f 2>/dev/null
       - name: actual time
         run: date
       - name: faketime
