@@ -3,7 +3,7 @@ on: push
 jobs:
   windows:
     runs-on: windows-latest
-    if: false
+    if: 'false'
     steps:
       - name: Before time change
         run: (Get-Date).toString()
@@ -21,8 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          find / -name '*faketime*'
+          apt install libfaketime
           cat /etc/ld.so.preload
+        continue-on-error: true
       - name: actual time
         run: date
       - name: faketime
