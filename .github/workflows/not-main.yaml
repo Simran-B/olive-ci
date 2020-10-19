@@ -1,0 +1,7 @@
+name: Not in main branch
+on: workflow_dispatch
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Branch: ${{ github.ref }}"
