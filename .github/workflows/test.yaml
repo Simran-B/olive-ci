@@ -16,8 +16,11 @@ jobs:
     name: Create Matrix
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }}
+      matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }} 
     steps:
+      - name: Actor
+        run: |
+          echo "${{ github.event.actor }}"
       - name: Set Matrix (manual)
         id: set-matrix-manual
         env:
