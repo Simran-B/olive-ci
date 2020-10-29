@@ -33,7 +33,7 @@ jobs:
         id: result
         uses: ./.github/actions/submodule
         with:
-          value: Howdy there
+          string: Howdy there
       - name: Output
         run: |
           echo '${{ steps.result.outputs.reversed }}'
