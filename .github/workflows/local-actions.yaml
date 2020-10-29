@@ -21,3 +21,19 @@ jobs:
         run: |
           echo '${{ steps.result.outputs.lower }}'
           echo '${{ steps.result.outputs.upper }}'
+  submodule-action:
+    name: Git Submodule Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+#       with:
+#         submodules: recursive
+      - name: Use submodule action
+        id: result
+        uses: ./.github/actions/submodule
+        with:
+          value: Howdy there
+      - name: Output
+        run: |
+          echo '${{ steps.result.outputs.reversed }}'
