@@ -10,6 +10,10 @@ on:
         description: Trigger Name
         required: true
         default: manual
+      os:
+        description: OS
+        required: true
+        default: ubuntu-latest
 
 jobs:
   create-matrix:
@@ -20,14 +24,15 @@ jobs:
     steps:
       - name: Actor
         run: |
-          echo "${{ github.event.actor }}"
+          echo "${{ github.actor }}"
       - name: Set Matrix (manual)
         id: set-matrix-manual
         env:
           MATRIX_JSON: '
             { "include": [{
               "build": 1,
-              "cause": ${{ toJSON(github.event.inputs.trigger) }}
+              "cause": ${{ toJSON(github.event.inputs.trigger) }},
+              "os": ${{ toJSON(github.event.inputs.os) }}
             }]}'
         run: echo "::set-output name=matrix::$MATRIX_JSON"
         if: github.event_name == 'workflow_dispatch'
