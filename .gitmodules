@@ -1,0 +1,3 @@
+[submodule ".github/actions/submodule"]
+	path = .github/actions/submodule
+	url = https://github.com/Simran-B/github-action
