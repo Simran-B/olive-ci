@@ -1,0 +1,14 @@
+name: Local Action
+description: JavaScript action in a sub folder
+inputs:
+  value:
+    description: Some string
+    required: true
+  outputs:
+    lower:
+      description: input value cast to lowercase
+    upper:
+      description: input value cast to uppercase
+runs:
+  using: node12
+  main: dist/index.js
