@@ -1,0 +1,23 @@
+name: Local Actions
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  subfolder-action:
+    name: Subfolder Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Use local action
+        id: result
+        uses: ./.github/actions/local
+        with:
+          value: Howdy there
+      - name: Output
+        run: |
+          echo '${{ steps.result.outputs.lower }}'
+          echo '${{ steps.result.outputs.upper }}'
