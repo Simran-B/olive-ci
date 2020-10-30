@@ -1,4 +1,4 @@
-name: Local Actions
+name: Local Actions ${{ format('foo', 'bar') }}
 
 on:
   push:
