@@ -25,6 +25,10 @@ jobs:
       - name: Actor
         run: |
           echo "${{ github.actor }}"
+      - name: Format
+        run: |
+          echo "${{ format('{0}{1}', 'foo', 'bar') }}"
+          echo "${{ format('foo', 'bar') }}"
       - name: Set Matrix (manual)
         id: set-matrix-manual
         env:
