@@ -1,4 +1,4 @@
-name: Local Actions
+name: Local Actions ${{ github.actor }}
 
 on:
   push:
@@ -37,3 +37,4 @@ jobs:
       - name: Output
         run: |
           echo '${{ steps.result.outputs.reversed }}'
+          echo '${{ steps.result.outputs.repeated }}'
