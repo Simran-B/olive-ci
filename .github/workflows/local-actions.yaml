@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch checkout action
+        continue-on-error: true
         run: |
           mkdir -p temp/checkout/dist
           cd temp/checkout
@@ -52,6 +53,7 @@ jobs:
           cd dist
           curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/index.js
           curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/problem-matcher.json
+          pwd
           find ..
       - name: Checkout repository
         uses: ./temp/checkout
