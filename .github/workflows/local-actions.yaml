@@ -46,13 +46,13 @@ jobs:
     steps:
       - name: Fetch checkout action
         run: |
-          mkdir -p temp/checkout
+          mkdir -p temp/checkout/dist
           cd temp/checkout
-          curl -O https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/action.yml
-          mkdir dist
+          curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/action.yml
           cd dist
-          curl -O https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/index.js
-          curl -O https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/problem-matcher.json
+          curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/index.js
+          curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/problem-matcher.json
+          find ..
       - name: Checkout repository
         uses: ./temp/checkout
       # Actions in your organization or own account don't need to be added to the allowlist
