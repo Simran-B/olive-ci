@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        #uses: actions/checkout@v2
+        uses: ./.github/actions/checkout
       - name: Use local action
         id: result
         uses: ./.github/actions/local
@@ -26,7 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        #uses: actions/checkout@v2
+        uses: ./.github/actions/checkout
         with:
           submodules: recursive
       - name: Use submodule action
