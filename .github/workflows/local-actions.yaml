@@ -44,8 +44,17 @@ jobs:
     name: Local Action
     runs-on: ubuntu-latest
     steps:
+      - name: Fetch checkout action
+        run: |
+          mkdir -p temp/checkout
+          cd temp/checkout
+          curl -O https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/action.yml
+          mkdir dist
+          cd dist
+          curl -O https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/index.js
+          curl -O https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/problem-matcher.json
       - name: Checkout repository
-        uses: ./.github/actions/checkout
+        uses: ./temp/checkout
       # Actions in your organization or own account don't need to be added to the allowlist
       - name: Use own Action
         id: result
