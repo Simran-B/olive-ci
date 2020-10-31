@@ -40,3 +40,19 @@ jobs:
         run: |
           echo '${{ steps.result.outputs.reversed }}'
           echo '${{ steps.result.outputs.repeated }}'
+  local-action:
+    name: Local Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: ./.github/actions/checkout
+      # Actions in your organization or own account don't need to be added to the allowlist
+      - name: Use own Action
+        id: result
+        uses: Simran-B/github-action
+        with:
+          string: Howdy there
+      - name: Output
+        run: |
+          echo '${{ steps.result.outputs.reversed }}'
+          echo '${{ steps.result.outputs.repeated }}'
