@@ -28,21 +28,21 @@ jobs:
       - name: Bash startup options
         run: |
           ps aux
-          echo "current PID: $$"
+          echo "-- current PID: $$"
           tr "\0" "\n" < /proc/$$/cmdline # current shell
-          echo "subshell PID: $BASHPID"
+          echo "-- subshell PID: $BASHPID"
           tr "\0" "\n" < /proc/$BASHPID/cmdline # subshell
-          echo "source code:"
-          cat "$(tr "\0" "\n" < /proc/$$/cmdline | head -3)" # current shell
+          echo "-- source code:"
+          cat "$(tr "\0" "\n" < /proc/$$/cmdline | head -3 | tail -1)" # current shell
       - name: Bash startup options (continue on error)
         continue-on-error: true
         run: |
-          echo "current PID: $$"
+          echo "-- current PID: $$"
           tr "\0" "\n" < /proc/$$/cmdline # current shell
-          echo "subshell PID: $BASHPID"
+          echo "-- subshell PID: $BASHPID"
           tr "\0" "\n" < /proc/$BASHPID/cmdline # subshell
-          echo "source code:"
-          cat "$(tr "\0" "\n" < /proc/$$/cmdline | head -3)" # current shell
+          echo "-- source code:"
+          cat "$(tr "\0" "\n" < /proc/$$/cmdline | head -3 | tail -1)" # current shell
       - name: Format
         run: |
           echo "${{ format('{0}{1}', 'foo', 'bar') }}"
