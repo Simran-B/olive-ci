@@ -25,6 +25,15 @@ jobs:
       - name: Actor
         run: |
           echo "${{ github.actor }}"
+      - name: Bash startup options
+        run: |
+          tr "\0" "\n" < /proc/$$/cmdline # current shell
+          tr "\0" "\n" < /proc/$BASHPID/cmdline # subshell
+      - name: Bash startup options (continue on error)
+        continue-on-error: true
+        run: |
+          tr "\0" "\n" < /proc/$$/cmdline # current shell
+          tr "\0" "\n" < /proc/$BASHPID/cmdline # subshell
       - name: Format
         run: |
           echo "${{ format('{0}{1}', 'foo', 'bar') }}"
