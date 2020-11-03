@@ -3,7 +3,7 @@ name: Local Actions
 on:
   push:
     branches:
-      - master
+      - master_DISABLED
 
 jobs:
   subfolder-action:
@@ -46,19 +46,20 @@ jobs:
     name: Local Action
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch checkout action
-        continue-on-error: true
-        run: |
-          mkdir -p temp/checkout/dist
-          cd temp/checkout
-          curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/action.yml
-          cd dist
-          curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/index.js
-          curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/problem-matcher.json
-          pwd
-          find ..
+    # - name: Fetch checkout action
+    #   continue-on-error: true
+    #   run: |
+    #     mkdir -p temp/checkout/dist
+    #     cd temp/checkout
+    #     curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/action.yml
+    #     cd dist
+    #     curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/index.js
+    #     curl -sSO https://raw.githubusercontent.com/Simran-B/olive-ci/master/.github/actions/checkout/dist/problem-matcher.json
+    #     pwd
+    #     find ..
       - name: Checkout repository
-        uses: ./temp/checkout
+        #uses: ./temp/checkout
+        uses: actions/checkout@v2
       # Actions in your organization or own account don't need to be added to the allowlist
       - name: Use own Action
         id: result
