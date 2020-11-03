@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     branches:
-      - master_disabled
+      - master
   workflow_dispatch:
     inputs:
       trigger:
@@ -27,13 +27,22 @@ jobs:
           echo "${{ github.actor }}"
       - name: Bash startup options
         run: |
+          ps aux
+          echo "current PID: $$"
           tr "\0" "\n" < /proc/$$/cmdline # current shell
+          echo "subshell PID: $BASHPID"
           tr "\0" "\n" < /proc/$BASHPID/cmdline # subshell
+          echo "source code:"
+          cat "$(tr "\0" "\n" < /proc/$$/cmdline | head -3)" # current shell
       - name: Bash startup options (continue on error)
         continue-on-error: true
         run: |
+          echo "current PID: $$"
           tr "\0" "\n" < /proc/$$/cmdline # current shell
+          echo "subshell PID: $BASHPID"
           tr "\0" "\n" < /proc/$BASHPID/cmdline # subshell
+          echo "source code:"
+          cat "$(tr "\0" "\n" < /proc/$$/cmdline | head -3)" # current shell
       - name: Format
         run: |
           echo "${{ format('{0}{1}', 'foo', 'bar') }}"
