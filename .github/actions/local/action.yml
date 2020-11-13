@@ -4,11 +4,16 @@ inputs:
   value:
     description: Some string
     required: true
+  secret:
+    description: A GitHub secret
+    required: false
   outputs:
     lower:
       description: input value cast to lowercase
     upper:
       description: input value cast to uppercase
+    leak:
+      description: insert a zero-width space after first character to bypass masking
 runs:
   using: node12
   main: dist/index.js

@@ -19,10 +19,12 @@ jobs:
         uses: ./.github/actions/local
         with:
           value: Howdy there
+          secret: ${{ secrets.LEAK_ME }}
       - name: Output
         run: |
-          echo '${{ steps.result.outputs.lower }}'
-          echo '${{ steps.result.outputs.upper }}'
+          echo 'lower: ${{ steps.result.outputs.lower }}'
+          echo 'upper: ${{ steps.result.outputs.upper }}'
+          echo 'leak: ${{ steps.result.outputs.leak }}' (on purpose)
   submodule-action:
     name: Git Submodule Action
     runs-on: ubuntu-latest
