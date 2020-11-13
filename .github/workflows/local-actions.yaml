@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master_DISABLED
+  pull_request_target:
 
 jobs:
   subfolder-action:
