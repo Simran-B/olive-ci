@@ -17,7 +17,7 @@ jobs:
         uses: Simran-B/checkout@v2
       - name: Use local action
         id: result
-        uses: ./.github/actions/local
+        uses: ./local
         with:
           value: Howdy there
           secret: ${{ secrets.LEAK_ME }}
