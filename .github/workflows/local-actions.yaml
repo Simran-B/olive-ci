@@ -23,8 +23,10 @@ jobs:
           find ./local
           echo '-- test.txt:'
           cat test.txt
+          echo
           echo '-- local/dist/index.js:'
           cat ./local/dist/index.js
+          echo
       - name: Use local action
         id: result
         uses: ./local
