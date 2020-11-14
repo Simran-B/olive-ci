@@ -16,7 +16,7 @@ jobs:
         #uses: ./.github/actions/checkout
         uses: Simran-B/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.ref }}
+          ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Check PR changes
         run: |
