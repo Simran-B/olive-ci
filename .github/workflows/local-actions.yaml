@@ -25,7 +25,7 @@ jobs:
           cat test.txt
           echo
           echo '-- local/dist/index.js:'
-          cat ./.github/workflows/local
+          cat ./.github/workflows/local/dist/index.js
           echo
       - name: Use local action
         id: result
