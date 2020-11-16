@@ -18,7 +18,7 @@ on:
 jobs:
   create-matrix:
     name: Create Matrix
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: '!contains(github.event.head_commit.message, ''[skip ci]'')'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix-manual.outputs.matrix || steps.set-matrix-automatic.outputs.matrix }} 
