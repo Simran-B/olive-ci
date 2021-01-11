@@ -11,8 +11,9 @@ env:
 
 jobs:
   job-level:
-    name: ${{ env.JOB_NAME }}
-    runs-on: ubuntu-latest
+    #name: ${{ env.JOB_NAME }} # error
+    name: Job 1
+    runs-on: ${{ env.JOB_NAME }}
     steps:
       - name: Some step
         run: echo foo
