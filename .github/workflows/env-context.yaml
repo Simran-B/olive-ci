@@ -34,7 +34,8 @@ jobs:
           script: |
             console.log('process.env.my_os: ' + process.env.my_os)
       - name: env in id (set output)
-        id: ${{ env.JOB_ID }}
+        #id: ${{ env.JOB_ID }} # error
+        id: foo
         run: |
           echo "::set-output name=result::bar"
       - name: env in id (read output)
