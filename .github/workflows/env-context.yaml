@@ -1,6 +1,6 @@
 env:
   JOB_NAME: Name defined at job level
-  JOB_OS: ubuntu-latest
+  JOB_OS: windows-latest
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -15,12 +15,20 @@ jobs:
     #name: ${{ env.JOB_NAME }} # error
     name: Job 1
     #runs-on: ${{ env.JOB_NAME }} # error
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - name: env in run
-        run: echo ${{ env.JOB_NAME }}
-      - name: env in with
+      - name: env context in run
+        run: echo ${{ env.JOB_NAME }} # works
+      - name: env var in action
         uses: actions/github-script@v3
         with:
           script: |
-            console.log('process.env.my_os: ' + process.env.JOB_OS)
+            console.log('process.env.JOB_OS: ' + process.env.JOB_OS)
+          # works, set via job level env
+      - name: env context in action
+        uses: actions/github-script@v3
+        env:
+          my_os: ${{ env.JOB_OS }}
+        with:
+          script: |
+            console.log('process.env.my_os: ' + process.env.my_os)
