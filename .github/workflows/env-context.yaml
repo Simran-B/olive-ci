@@ -2,7 +2,8 @@ env:
   JOB_NAME: Name defined at job level
   JOB_OS: ubuntu-latest
 
-name: ${{ env.JOB_NAME }}
+#name: ${{ env.JOB_NAME }} # error
+name: Env context
 
 on:
   push:
@@ -17,4 +18,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Some step
-        run: echo foo
+        run: echo ${{ env.JOB_NAME }}
