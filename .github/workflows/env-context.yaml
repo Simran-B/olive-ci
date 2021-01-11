@@ -1,0 +1,16 @@
+name: Env context
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  JOB_ENV: Name defined at job level
+
+jobs:
+  job-level:
+    name: ${{ env.JOB_ENV }}
+    steps:
+      - name: Some step
+        run: echo foo
