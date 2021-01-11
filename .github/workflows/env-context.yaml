@@ -6,11 +6,13 @@ on:
       - master
 
 env:
-  JOB_ENV: Name defined at job level
+  JOB_NAME: Name defined at job level
+  JOB_OS: ubuntu-latest
 
 jobs:
   job-level:
-    name: ${{ env.JOB_ENV }}
+    name: ${{ env.JOB_NAME }}
+    runs-on: ubuntu-latest
     steps:
       - name: Some step
         run: echo foo
