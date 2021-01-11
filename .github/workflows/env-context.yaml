@@ -15,7 +15,13 @@ jobs:
     #name: ${{ env.JOB_NAME }} # error
     name: Job 1
     #runs-on: ${{ env.JOB_NAME }} # error
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - name: Some step
+      - name: env in run
         run: echo ${{ env.JOB_NAME }}
+      - name: env in with
+        uses: actions/github-script@v3
+        with:
+          my_os: ${{ env.JOB_OS }}
+        script: |
+          console.log('process.env.my_os: ' + process.env.my_os)
