@@ -1,6 +1,7 @@
 env:
   JOB_NAME: Name defined at job level
   JOB_OS: windows-latest
+  JOB_ID: foo
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -28,7 +29,14 @@ jobs:
       - name: env context in action
         uses: actions/github-script@v3
         env:
-          my_os: ${{ env.JOB_OS }}
+          my_os: ${{ env.JOB_OS }} # works
         with:
           script: |
             console.log('process.env.my_os: ' + process.env.my_os)
+      - name: env in id (set output)
+        id: ${{ env.JOB_ID }}
+        run: |
+          echo "::set-output name=result::bar"
+      - name: env in id (read output)
+        run: |
+          echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
