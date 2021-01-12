@@ -45,7 +45,8 @@ jobs:
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
       - name: env in uses
-        uses: ${{ env.JOB_ACTION }}
+        #uses: ${{ env.JOB_ACTION }} # error
+        uses: actions/github-script@v3
         with:
           script: console.log("${{ env.JOB_ACTION }}")
       - name: env in timeout
