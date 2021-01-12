@@ -5,7 +5,7 @@ env:
   JOB_ACTION: actions/github-script@v3
   JOB_TIMEOUT: 1
   JOB_BOOL: true
-  JOB_ACTION: |
+  JOB_WITH: |
     { "script": "console.log('with block supplied as JSON string')" }
 
 #name: ${{ env.JOB_NAME }} # error
