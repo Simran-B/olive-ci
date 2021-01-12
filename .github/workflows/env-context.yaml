@@ -61,7 +61,7 @@ jobs:
       - name: env in with.args
         uses: actions/hello-world-docker-action@v1
         with:
-          args: Value supplied to with.args
+          args: "FirstArgument SecondArgument?"
       - name: env in with.entrypoint
         uses: actions/hello-world-docker-action@v1
         continue-on-error: true
@@ -70,12 +70,12 @@ jobs:
           entrypoint: ${{ env.JOB_ENTRY }} # works
       - name: env in timeout
         continue-on-error: true
-        timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
+        timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }} # works
         run: |
           echo sleeping for 2 minutes
           sleep 120
           echo done
       - name: env in continue
-        continue-on-error: ${{ !!env.JOB_BOOL }}
+        continue-on-error: ${{ !!env.JOB_BOOL }} # works
         run: |
           exit 1
