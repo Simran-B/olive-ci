@@ -45,6 +45,6 @@ jobs:
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
       - name: env in continue
-        continue-on-error: ${{ env.JOB_BOOL }}
+        continue-on-error: ${{ env.JOB_BOOL == 'true' }}
         run: |
           exit 1
