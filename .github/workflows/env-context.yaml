@@ -7,6 +7,8 @@ env:
   JOB_BOOL: true
   JOB_WITH: |
     { "script": "console.log('with block supplied as JSON string')" }
+  JOB_STEP: |
+    {"name": "env as step", "run": "echo Entire step defined as string"}
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -54,6 +56,7 @@ jobs:
       - name: env in with
         uses: actions/github-script@v3
         with: ${{ fromJSON(env.JOB_WITH) }}
+      - ${{ fromJSON(env.JOB_STEP) }}
       - name: env in timeout
         continue-on-error: true
         timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
