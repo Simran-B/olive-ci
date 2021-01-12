@@ -44,6 +44,10 @@ jobs:
       - name: env in id (read output)
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
+      - name: env in uses
+        uses: ${{ env.JOB_ACTION }}
+        with:
+          script: console.log("${{ env.JOB_ACTION }}")
       - name: env in timeout
         continue-on-error: true
         timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
