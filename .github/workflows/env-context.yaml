@@ -45,12 +45,13 @@ jobs:
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
       - name: env in timeout
+        continue-on-error: true
         timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
         run: |
           echo sleeping for 2 minutes
           sleep 120
           echo done
       - name: env in continue
-        continue-on-error: ${{ env.JOB_BOOL == 'true' }}
+        continue-on-error: ${{ !!env.JOB_BOOL }}
         run: |
           exit 1
