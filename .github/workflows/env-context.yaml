@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
       - name: env in timeout
-        timeout-minutes: ${{ +env.JOB_TIMEOUT }}
+        timeout-minutes: ${{ env.JOB_TIMEOUT + 0 }}
         run: |
           echo sleeping for 2 minutes
           sleep 120
