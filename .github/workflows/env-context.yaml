@@ -56,7 +56,12 @@ jobs:
       - name: env in with
         uses: actions/github-script@v3
         with: ${{ fromJSON(env.JOB_WITH) }}
-      - ${{ fromJSON(env.JOB_STEP) }}
+      #- ${{ fromJSON(env.JOB_STEP) }} # error
+      - name: env in with.entrypoint
+        uses: actions/hello-world-docker-action@v1
+        with:
+          who-to-greet: 'Mona the Octocat'
+          entrypoint: /missing.sh
       - name: env in timeout
         continue-on-error: true
         timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
