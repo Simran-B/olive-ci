@@ -44,6 +44,12 @@ jobs:
       - name: env in id (read output)
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
+      - name: env in timeout
+        timeout-minutes: ${{ env.JOB_TIMEOUT }}
+        run: |
+          echo sleeping for 2 minutes
+          sleep 120
+          echo done
       - name: env in continue
         continue-on-error: ${{ env.JOB_BOOL == 'true' }}
         run: |
