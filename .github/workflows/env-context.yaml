@@ -2,6 +2,9 @@ env:
   JOB_NAME: Name defined at job level
   JOB_OS: windows-latest
   JOB_ID: foo
+  JOB_ACTION: actions/github-script@v3
+  JOB_TIMEOUT: 5
+  JOB_BOOL: true
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -41,3 +44,7 @@ jobs:
       - name: env in id (read output)
         run: |
           echo "result = ${{ steps[env.JOB_ID].outputs.result }}"
+      - name: env in continue
+        continue-on-error: ${{ env.JOB_BOOL }}
+        run: |
+          exit 1
