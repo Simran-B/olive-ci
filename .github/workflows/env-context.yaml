@@ -5,6 +5,8 @@ env:
   JOB_ACTION: actions/github-script@v3
   JOB_TIMEOUT: 1
   JOB_BOOL: true
+  JOB_ACTION: |
+    { "script": "console.log('with block supplied as JSON string')" }
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -49,6 +51,9 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: console.log("${{ env.JOB_ACTION }}")
+      - name: env in with
+        uses: actions/github-script@v3
+        with: ${{ fromJSON(env.JOB_WITH) }}
       - name: env in timeout
         continue-on-error: true
         timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
