@@ -10,6 +10,7 @@ env:
   JOB_STEP: |
     {"name": "env as step", "run": "echo Entire step defined as string"}
   JOB_ENTRY: /custom.sh
+  JOB_ARGS: FirstArgument SecondArgument?
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -61,7 +62,8 @@ jobs:
       - name: env in with.args
         uses: actions/hello-world-docker-action@v1
         with:
-          args: "FirstArgument SecondArgument?"
+          entrypoint: /bin/echo
+          args: ${{ env.JOB_ARGS }}
       - name: env in with.entrypoint
         uses: actions/hello-world-docker-action@v1
         continue-on-error: true
