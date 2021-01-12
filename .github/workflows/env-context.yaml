@@ -18,7 +18,7 @@ name: Env context
 on:
   push:
     branches:
-      - master
+      - master_DISABLED
 
 jobs:
   job-level:
@@ -54,16 +54,16 @@ jobs:
         #uses: ${{ env.JOB_ACTION }} # error
         uses: actions/github-script@v3
         with:
-          script: console.log("${{ env.JOB_ACTION }}")
+          script: console.log("${{ env.JOB_ACTION }}") # works
       - name: env in with
         uses: actions/github-script@v3
-        with: ${{ fromJSON(env.JOB_WITH) }}
+        with: ${{ fromJSON(env.JOB_WITH) }} # works
       #- ${{ fromJSON(env.JOB_STEP) }} # error
       - name: env in with.args
         uses: actions/hello-world-docker-action@v1
         with:
           entrypoint: /bin/echo
-          args: ${{ env.JOB_ARGS }}
+          args: ${{ env.JOB_ARGS }} # works
       - name: env in with.entrypoint
         uses: actions/hello-world-docker-action@v1
         continue-on-error: true
