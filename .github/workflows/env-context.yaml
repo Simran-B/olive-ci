@@ -9,6 +9,7 @@ env:
     { "script": "console.log('with block supplied as JSON string')" }
   JOB_STEP: |
     {"name": "env as step", "run": "echo Entire step defined as string"}
+  JOB_ENTRY: /custom.sh
 
 #name: ${{ env.JOB_NAME }} # error
 name: Env context
@@ -61,7 +62,7 @@ jobs:
         uses: actions/hello-world-docker-action@v1
         with:
           who-to-greet: 'Mona the Octocat'
-          entrypoint: /missing.sh
+          entrypoint: ${{ env.JOB_ENTRY }}
       - name: env in timeout
         continue-on-error: true
         timeout-minutes: ${{ fromJSON(env.JOB_TIMEOUT) }}
