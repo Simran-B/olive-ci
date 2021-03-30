@@ -33,7 +33,7 @@ jobs:
         with:
           value: Howdy there
           secret: ${{ secrets.LEAK_ME }}
-          obsolete: OUTDATED INPUT
+          #obsolete: OUTDATED INPUT
       - name: Output
         run: |
           echo 'lower: ${{ steps.result.outputs.lower }}'
