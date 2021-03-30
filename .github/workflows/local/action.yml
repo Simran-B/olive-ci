@@ -7,6 +7,9 @@ inputs:
   secret:
     description: A GitHub secret
     required: false
+  obsolete:
+    description: An option to test the deprecationMessage property
+    deprecationMessage: This option should no longer be used!
   outputs:
     lower:
       description: input value cast to lowercase
@@ -14,6 +17,9 @@ inputs:
       description: input value cast to uppercase
     leak:
       description: insert a zero-width space after first character to bypass masking
+    obsolete:
+      description: Does deprecationMessage also work for outputs?!
+      deprecationMessage: This output should no longer be used!
 runs:
   using: node12
   main: dist/index.js

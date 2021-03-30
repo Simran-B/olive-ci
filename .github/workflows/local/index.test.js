@@ -8,3 +8,9 @@ test("valid string", () => {
     const ip = path.join(__dirname, "index.js")
     console.log(cp.execSync(`node ${ip}`, {env: process.env}).toString())
 })
+
+test("obsolete input", () => {
+    process.env["INPUT_OBSOLETE"] = "Big oof."
+    const ip = path.join(__dirname, "index.js")
+    console.log(cp.execSync(`node ${ip}`, {env: process.env}).toString())
+})

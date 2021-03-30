@@ -3,7 +3,7 @@ name: Local Actions
 on:
   push:
     branches:
-      - master_DISABLED
+      - master
   pull_request_target:
 
 jobs:
@@ -33,11 +33,13 @@ jobs:
         with:
           value: Howdy there
           secret: ${{ secrets.LEAK_ME }}
+          obsolete: OUTDATED INPUT
       - name: Output
         run: |
           echo 'lower: ${{ steps.result.outputs.lower }}'
           echo 'upper: ${{ steps.result.outputs.upper }}'
           echo 'leak (on purpose): ${{ steps.result.outputs.leak }}'
+          echo 'obsolete output: ${{ steps.result.outputs.obsolete }}'
   submodule-action:
     name: Git Submodule Action
     runs-on: ubuntu-latest
