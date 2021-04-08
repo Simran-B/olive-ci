@@ -1,0 +1,36 @@
+name: Context
+
+on:
+  push:
+    - master
+
+jobs:
+  print-contexts:
+    name: Print Contexts
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: github
+        env:
+          GITHUB: ${{ github }}
+        run: echo "$GITHUB"
+      - name: env
+        env:
+          ENV: ${{ env }}
+        run: echo "$ENV"
+      - name: job
+        env:
+          JOB: ${{ job }}
+        run: echo "$JOB"
+      - name: steps
+        env:
+          STEPS: ${{ steps }}
+        run: echo "$STEPS"
+      - name: runner
+        env:
+          RUNNER: ${{ runner }}
+        run: echo "$RUNNER"
+      - name: strategy
+        env:
+          STRATEGY: ${{ strategy }}
+        run: echo "$STRATEGY"
