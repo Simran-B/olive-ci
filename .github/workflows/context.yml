@@ -13,25 +13,29 @@ jobs:
     steps:
       - name: github
         env:
-          GITHUB: ${{ github }}
+          GITHUB: ${{ toJSON(github) }}
         run: echo "$GITHUB"
       - name: env
         env:
-          ENV: ${{ env }}
+          ENV: ${{ toJSON(env) }}
         run: echo "$ENV"
       - name: job
         env:
-          JOB: ${{ job }}
+          JOB: ${{ toJSON(job) }}
         run: echo "$JOB"
       - name: steps
         env:
-          STEPS: ${{ steps }}
+          STEPS: ${{ toJSON(steps) }}
         run: echo "$STEPS"
       - name: runner
         env:
-          RUNNER: ${{ runner }}
+          RUNNER: ${{ toJSON(runner) }}
         run: echo "$RUNNER"
       - name: strategy
         env:
-          STRATEGY: ${{ strategy }}
+          STRATEGY: ${{ toJSON(strategy) }}
         run: echo "$STRATEGY"
+      - name: secrets
+        env:
+          SECRETS: ${{ toJSON(secrets) }}
+        run: echo "$SECRETS"
