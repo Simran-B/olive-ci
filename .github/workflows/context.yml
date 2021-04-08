@@ -2,7 +2,8 @@ name: Context
 
 on:
   push:
-    - master
+    branches:
+      - master
 
 jobs:
   print-contexts:
