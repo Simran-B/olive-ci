@@ -6,6 +6,14 @@ on:
       - master
 
 jobs:
+  unnamed:
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo Some command
+          pwd
+          ls -lah
+          date
   print-contexts:
     name: Print Contexts
     runs-on: ubuntu-latest
