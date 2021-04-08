@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - name: printenv
+        run: printenv
       - name: github
         env:
           GITHUB: ${{ toJSON(github) }}
@@ -39,3 +41,7 @@ jobs:
         env:
           SECRETS: ${{ toJSON(secrets) }}
         run: echo "$SECRETS"
+      - name: matrix
+        env:
+          MATRIX: ${{ toJSON(matrix) }}
+        run: echo "$MATRIX"
