@@ -1,8 +1,6 @@
 name: Pull Request
 
-on:
-  pull_request:
-  pull_request_target:
+on: [pull_request, pull_request_target]
 
 jobs:
   build:
@@ -37,6 +35,10 @@ jobs:
         if: >-
           github.event_name == 'pull_request_target' &&
           github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: Workflow modified by PR
+        run: |
+          echo "This was added as part of a PR, so this should be in the same repo"
 
       - name: Test file content
         continue-on-error: true
