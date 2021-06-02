@@ -7,6 +7,16 @@ on:
   pull_request:
 
 jobs:
+  matvars:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        - fish: ["codd", "salmon"]
+    steps:
+      - run: |
+          echo "fish = ${{ matrix.fish }}"
+        name: Yummy ${{ matrix.fish }}!
+      
   unnamed:
     runs-on: ubuntu-latest
     steps:
