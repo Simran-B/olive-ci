@@ -9,9 +9,9 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail
+      - name: Succeed
         run: |
-          exit 1
+          exit 0
   job2:
     runs-on: ubuntu-latest
     steps:
