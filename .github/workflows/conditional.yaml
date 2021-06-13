@@ -2,7 +2,8 @@ name: Conditional
 
 on:
   push:
-    - master
+    branches:
+      - master
 
 jobs:
   job1:
