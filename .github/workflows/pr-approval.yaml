@@ -17,7 +17,7 @@ jobs:
             const result = await github.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number, // context.payload.pull_request.number ?
+              pull_number: 999, //context.issue.number, // context.payload.pull_request.number ?
               event: "APPROVE"
             })
             console.log(result)
