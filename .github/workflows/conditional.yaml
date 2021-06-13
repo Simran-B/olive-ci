@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Succeed
         run: |
-          exit 0
+          exit 1
   job2:
     runs-on: ubuntu-latest
     steps:
