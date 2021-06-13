@@ -1,0 +1,22 @@
+name: PR Approval
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Self-approve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const result = await github.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number, // context.payload.pull_request.number ?
+              event: "APPROVE"
+            })
+            console.log(result)
