@@ -9,6 +9,7 @@ jobs:
   build:
     name: Self-approve
     runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'Simran-B'
     steps:
       - uses: actions/github-script@v4
         with:
