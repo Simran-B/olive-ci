@@ -1,3 +1,4 @@
 Original content
 
-Check self-approval! Invalid PR number
+Check self-approval!
+Invalid PR number
