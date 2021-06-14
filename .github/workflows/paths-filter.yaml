@@ -23,6 +23,5 @@ jobs:
           CHANGES: ${{ needs.changes.outputs.packages }}
         run: |
           echo "$CHANGES"
-          echo "Parses to empty array? ${{ fromJSON(needs.changes.outputs.packages) == [] }}"
-          echo "Is empty array? ${{ needs.changes.outputs.packages == [] }}"
+          echo "Parses to empty array? ${{ fromJSON(needs.changes.outputs.packages) == fromJSON('[]') }}"
           echo "Is empty array string? ${{ needs.changes.outputs.packages == '[]' }}"
