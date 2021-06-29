@@ -5,13 +5,22 @@ labels:
   - wontfix
 body:
   - type: input
+    id: assignees
+    attributes:
+      label: Assignees
+      description: Does this collide with the `assignees` query param?
+  - type: input
+    id: template
+    attributes:
+      label: Template
+      description: Does this collide with the `template` query param?
+  - type: input
     id: commit_hash
     attributes:
       label: Commit hash
       description: |
         This 8 character string of letters/numbers unique identifies the exact version you are using.
         You can find it in title bar or in the `Help` > `About` dialog
-        ![image](https://user-images.githubusercontent.com/7819991/123143125-7f21d180-d45a-11eb-91a4-442d85c0217f.png)
       placeholder: e.g. 3ea173c9
     validations:
       required: true
