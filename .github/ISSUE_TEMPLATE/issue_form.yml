@@ -1,95 +1,47 @@
-name: Report an issue with Home Assistant Core
-description: Report an issue with Home Assistant Core.
+name: Crash
+description: Report a fatal crash that resulted in Olive unexpectedly closing.
+title: '[CRASH] '
+labels:
+  - Crash
+  - Triage
 body:
-  - type: markdown
-    attributes:
-      value: |
-        This issue form is for reporting bugs only!
-
-        If you have a feature or enhancement request, please use the [feature request][fr] section of our [Community Forum][fr].
-
-        [fr]: https://community.home-assistant.io/c/feature-requests
-  - type: textarea
-    validations:
-      required: true
-    attributes:
-      label: The problem
-      description: >-
-        Describe the issue you are experiencing here to communicate to the
-        maintainers. Tell us what you were trying to do and what happened.
-
-        Provide a clear and concise description of what the problem is.
-  - type: markdown
-    attributes:
-      value: |
-        ## Environment
   - type: input
-    id: version
-    validations:
-      required: true
+    id: commit_hash
     attributes:
-      label: What is version of Home Assistant Core has the issue?
-      placeholder: core-
-      description: >
-        Can be found in the Configuration panel -> Info.
-  - type: input
-    attributes:
-      label: What was the last working version of Home Assistant Core?
-      placeholder: core-
-      description: >
-        If known, otherwise leave blank.
-  - type: dropdown
-    validations:
-      required: true
-    attributes:
-      label: What type of installation are you running?
-      description: >
-        If you don't know, you can find it in: Configuration panel -> Info.
-      options:
-        - Home Assistant OS
-        - Home Assistant Container
-        - Home Assistant Supervised
-        - Home Assistant Core
-  - type: input
-    id: integration_name
-    attributes:
-      label: Integration causing the issue
-      description: >
-        The name of the integration, for example, Automation or Philips Hue.
-  - type: input
-    id: integration_link
-    attributes:
-      label: Link to integration documentation on our website
-      placeholder: "https://www.home-assistant.io/integrations/..."
+      label: Commit hash
       description: |
-        Providing a link [to the documentation][docs] help us categorizing the
-        issue, while providing a useful reference at the same time.
-
-        [docs]: https://www.home-assistant.io/integrations
-
-  - type: markdown
+        This 8 character string of letters/numbers unique identifies the exact version you are using.
+        You can find it in title bar or in the Help > About dialog
+      placeholder: e.g. 3ea173c9
+      validations:
+        required: true
+  - type: input
+    id: platform
     attributes:
-      value: |
-        # Details
+      label: Platform
+      description: Your operating system and version.
+      placeholder: e.g. Windows 10, Ubuntu 20.04, or macOS 10.15
+    validations:
+      required: true
   - type: textarea
     attributes:
-      label: Example YAML snippet
-      description: |
-        If this issue has an example piece of YAML that can help reproducing this problem, please provide.
-        This can be an piece of YAML from, e.g., an automation, script, scene or configuration.
-      render: yaml
+      label: Summary
+      description: Provide a clear and concise description of how Olive crashed.
+    validations:
+      required: true
   - type: textarea
     attributes:
-      label: Anything in the logs that might be useful for us?
-      description: For example, error message, or stack traces.
-      render: txt
-  - type: markdown
-    attributes:
+      label: Steps to reproduce
       value: |
-        ## Additional information
-  - type: markdown
+        1. 
+        2. 
+        3. 
+  - type: textarea
     attributes:
-      value: >
-        If you have any additional information for us, use the field below.
-        Please note, you can attach screenshots or screen recordings here, by
-        dragging and dropping files in the field below.
+      label: Additional information
+      value: |
+        <details><summary><strong>Crash Report</strong></summary><pre><code>
+
+        <!-- You should have received a crash report from Olive to paste here. -->
+
+        </code></pre></details>
