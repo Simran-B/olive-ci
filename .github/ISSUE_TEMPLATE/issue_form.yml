@@ -4,19 +4,14 @@ labels:
   - bug
   - wontfix
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Please provide the following version information:
-
-        ![image](https://user-images.githubusercontent.com/7819991/123143125-7f21d180-d45a-11eb-91a4-442d85c0217f.png)
   - type: input
     id: commit_hash
     attributes:
       label: Commit hash
       description: |
         This 8 character string of letters/numbers unique identifies the exact version you are using.
-        You can find it in title bar or in the Help > About dialog
+        You can find it in title bar or in the `Help` > `About` dialog
+        ![image](https://user-images.githubusercontent.com/7819991/123143125-7f21d180-d45a-11eb-91a4-442d85c0217f.png)
       placeholder: e.g. 3ea173c9
     validations:
       required: true
@@ -28,6 +23,16 @@ body:
       placeholder: e.g. Windows 10, Ubuntu 20.04, or macOS 10.15
     validations:
       required: true
+  - type: dropdown
+    attributes:
+      label: Source
+      description: How did you obtain Olive?
+      options:
+        - Official AppImage
+        - Third-party download
+        - Built from source
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Summary
@@ -37,7 +42,7 @@ body:
   - type: textarea
     attributes:
       label: Steps to reproduce
-      value: |
+      value: |-
         1. 
         2. 
         3. 
@@ -48,6 +53,7 @@ body:
       label: Additional information
       description: You can add console output, crash reports, and comments here.
       value: |
+
         <details><summary><strong>Crash Report</strong></summary><pre><code>
 
         <!-- You should have received a crash report from Olive to paste here. -->
