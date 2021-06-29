@@ -13,8 +13,8 @@ body:
         This 8 character string of letters/numbers unique identifies the exact version you are using.
         You can find it in title bar or in the Help > About dialog
       placeholder: e.g. 3ea173c9
-      validations:
-        required: true
+    validations:
+      required: true
   - type: input
     id: platform
     attributes:
