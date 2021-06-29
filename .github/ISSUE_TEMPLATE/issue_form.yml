@@ -1,19 +1,10 @@
 name: Crash
-description: Report a fatal crash that resulted in Olive unexpectedly closing.
+description: >
+  Report a fatal crash that resulted in Olive unexpectedly closing.
 labels:
   - bug
   - wontfix
 body:
-  - type: input
-    id: assignees
-    attributes:
-      label: Assignees
-      description: Does this collide with the `assignees` query param?
-  - type: input
-    id: template
-    attributes:
-      label: Template
-      description: Does this collide with the `template` query param?
   - type: input
     id: commit_hash
     attributes:
@@ -62,9 +53,10 @@ body:
       label: Additional information
       description: You can add console output, crash reports, and comments here.
       value: |
+        ```
+        Paste console output here
+        ```
 
         <details><summary><strong>Crash Report</strong></summary><pre><code>
-
-        <!-- You should have received a crash report from Olive to paste here. -->
-
+            Paste crash report here
         </code></pre></details>
