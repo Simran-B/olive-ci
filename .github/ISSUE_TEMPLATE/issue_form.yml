@@ -5,10 +5,11 @@ labels:
   - wontfix
 body:
   - type: markdown
-    value: |
-      Please provide the following version information:
+    attributes:
+      value: |
+        Please provide the following version information:
 
-      ![image](https://user-images.githubusercontent.com/7819991/123143125-7f21d180-d45a-11eb-91a4-442d85c0217f.png)
+        ![image](https://user-images.githubusercontent.com/7819991/123143125-7f21d180-d45a-11eb-91a4-442d85c0217f.png)
   - type: input
     id: commit_hash
     attributes:
